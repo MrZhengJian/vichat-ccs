@@ -2,10 +2,10 @@
 	position: absolute;
 	top: 18px;left: 18px;right: 18px;bottom: 18px;
 	.search{
+		height: 65px;
 		.ivu-card-body{
 			padding:0 16px;
 			&>div{
-				overflow: hidden;
 				.search_item{
 					float: left;
 					display:flex;
@@ -14,7 +14,6 @@
 						font-size: 14px;
 						line-height: 32px;
 						padding:0 10px;
-						width:80px;
 						text-align: right;
 					};
 
@@ -30,6 +29,19 @@
 					}
 					
 				}
+				.agentTree{
+					position: relative;
+					.ivu-tree{
+						position: absolute;
+						left: 0;right: 0;top: 40px;
+						z-index: 100;
+						max-height: 300px;
+						background: #fff;
+						padding:10px;
+						border:1px solid #ddd;
+						overflow: auto
+					}
+				}
 				.moreSearchContent .ivu-select-dropdown{max-height: 310px !important;}
 			}
 		}
@@ -40,20 +52,6 @@
 		top:70px;left: 0;right: 0;bottom: 50px;
 		margin-top: 10px;
 		overflow: auto;
-		border:1px solid #dcdee2;
-		.btns{
-			overflow: hidden;
-			margin-bottom: 10px;
-			.ivu-btn{
-				float: right
-			}
-		}
-		.table{
-			overflow: auto;
-			.ivu-table-wrapper{
-				border:none
-			}
-		}
 	}
 	.pages{
 		position: absolute;

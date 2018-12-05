@@ -106,9 +106,10 @@ export default {
 	balance:'Balance(M)',
 	beforeBalance:'Before(M)',
 	afterBalance:'After(M)',
-	busiType1:'Account Recharge',
-	busiType2:'Recharge In',
-	busiType3:'Recharge Out',
+	recharge_in:'Recharge In',
+	recharge_out:'Recharge Out',
+	turn_in:'Transfer In',
+	turn_out:'Transfer Out',
 	busiType_placeholder:'Please select type',
 	value:'Value',
 	search:'Search',
@@ -401,6 +402,7 @@ export default {
 	user_table_import_success_list:'Successded',
 	user_table_import_falied_list:'Failed',
 	user_table_import_Content_error:'Import contents can not be empty',
+	user_table_import_agentId_error:'Please select agent',
 
 
 

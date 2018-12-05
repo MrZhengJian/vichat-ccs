@@ -585,7 +585,7 @@ data () {
                           getSession()
                             .then((res)=>{
                                 if(res.data.code==0){
-                                    _this.renewMax = res.data.data.company.authMonth
+                                    // _this.renewMax = res.data.data.company.authMonth
                                     _this.modal9 = true
                                     // console.log(_this.renewMax )
                                 }

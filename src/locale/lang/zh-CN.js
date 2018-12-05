@@ -106,9 +106,10 @@ export default {
 	balance:'余额(月)',
 	beforeBalance:'操作前余额(月)',
 	afterBalance:'操作后余额(月)',
-	busiType1:'账号充值(出)',
-	busiType2:'额度冲入',
-	busiType3:'子代理商充值(出)',
+	recharge_in:'入账',
+	recharge_out:'出账',
+	turn_in:'转入方',
+	turn_out:'转出方',
 	busiType_placeholder:'请选择交易类型',
 	value:'数额',
 	search:'查询',
@@ -377,6 +378,7 @@ export default {
 	user_table_import_success_list:'成功列表',
 	user_table_import_falied_list:'失败列表',
 	user_table_import_Content_error:'导入内容不能为空',
+	user_table_import_agentId_error:'请选择代理商',
 
 
 	// org-table
@@ -588,5 +590,8 @@ export default {
 	'00007000001':'流水不存在',
 	'00008000001':'SN 已存在',
 	'00008000002':'SN 不存在',
+	"0000500004":"",
+	"0000300005":"",
+	"0000100019":"",
 	'IE_alert': '如果网页无法正常显示，请使用极速模式或谷歌浏览器'
 }

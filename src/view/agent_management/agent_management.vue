@@ -21,27 +21,7 @@
                     <a @click="showMoreSearch">{{moreSearch}}</a>
                 </div> -->
             </div>
-            <!-- <div v-if="moreSearch==$t('normalSearch')">
-                <div class="search_item">
-                    <div class="search_label">{{$t('name')}}</div>
-                    <div class="search_input">
-                        <Input v-model="search.name" :placeholder="please_enter_name" />
-                    </div>
-                </div>
-                <div class="search_item">
-                    <div class="search_label">{{$t('name')}}</div>
-                    <div class="search_input">
-                        <Input v-model="search.name" :placeholder="please_enter_name" />
-                    </div>
-                </div>
-                <div class="search_item">
-                    <div class="search_label">{{$t('name')}}</div>
-                    <div class="search_input">
-                        <Input v-model="search.name" :placeholder="please_enter_name" />
-                    </div>
-                </div>
-            </div>
- -->
+
         </Card>
     	<div class="content" ref='content'>
             <div class="btns">
@@ -116,6 +96,9 @@
             <Form :model="renew_form" ref="renew" :rules="renewRule"  :label-width="120">
                 <FormItem  :label="RechargeByMonth"  style="margin:12px;">
                     <InputNumber :min="1" v-model="renew_form.monthNumber" style="width: 300px"></InputNumber> 
+                </FormItem>
+                <FormItem  :label="remark"  style="margin:12px;">
+                    <Input v-model="renew_form.record" type="textarea" :rows="3"  style="width: 300px"/> 
                 </FormItem>
             </Form>
              <div slot="footer">
@@ -350,7 +333,9 @@ export default {
             renewMax:0,
             renew_form:{
                 agentIds:'',
-                monthNumber:1            },
+                monthNumber:1 ,
+                record:''
+            },
             renewRule:{
                 monthNumber: [
                   {required: true, message: this.$t('renew_by_month_rule'), trigger: 'blur'}
@@ -456,7 +441,7 @@ export default {
         },
         openRenew(param){
             let _this = this
-            
+            this.renew_form.record = ''
             this.renew_form.monthNumber = 1
             this.renew_form.agentIds = param.row.agentId
             getSession()
@@ -506,6 +491,9 @@ export default {
         },
     },
     computed:{
+        remark:function(){
+            return this.$t('remark')
+        },
         please_enter_name:function(){
             return this.$t('please_enter_name')
         },

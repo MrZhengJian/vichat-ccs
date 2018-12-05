@@ -3,6 +3,13 @@
         <Card class="search">
             <div>
                 <div class="search_item">
+                    <div class="search_label">{{$t('agent')}}</div>
+                    <div class="search_input agentTree">
+                        <Input @on-focus="showTree=true" v-model='searchMes.agentName' clearable :placeholder="agent_name_placeholder" @on-change="clearSearchAgent" style="width:250px"/>
+                        <Tree v-if="showTree" @on-select-change="clickTreeNode" :data="treeDate" :load-data="getChildAgent" style="width:250px"></Tree>
+                    </div>
+                </div>
+                <div class="search_item">
                     <div class="search_label">{{$t('home_echart_date')}}</div>
                     <div class="search_input">
                         <DatePicker v-model='searchMes.date'  type="datetimerange" :options="dateOptions" :placeholder="SelectDate" style="width: 300px"></DatePicker>
@@ -11,83 +18,19 @@
                 <div class="search_item">
                     <div class="search_label">{{$t('alarmType')}}</div>
                     <div class="search_input">
-                        <Select v-model="searchMes.busiType" style="width:150px" :placeholder="busiType_placeholder">
-                            <Option v-for="item in busiTypeList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                        <Select v-model="searchMes.busiState" style="width:150px" :placeholder="busiType_placeholder">
+                            <Option v-for="item in busiStateList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </div>
                 </div>
                 
-                
-                <div class="moreSearch">
-                    <a @click="showMoreSearch">{{moreSearch}}</a>
-                </div>
                 <div class="moreSearch">
                     <Button type='primary' @click="search">{{$t('search')}}</Button>
                 </div>
             </div>
-            <div class="moreSearchContent" v-if="moreSearch==$t('normalSearch')">
-                <!-- <div class="search_item">
-                    <div class="search_label">{{$t('name')}}</div>
-                    <div class="search_input">
-                        <Input v-model="searchMes.agentUname" style="width: 250px" clearable :placeholder="agentUname_placeholder" />
-                    </div>
-                </div> -->
-                <div class="search_item">
-                    <div class="search_label">{{$t('agent')}}</div>
-                    <div class="search_input">
-                        <Select 
-                          v-model="searchMes.agentId" 
-                          @on-change="selectAgent" 
-                          clearable 
-                          style="width:200px"
-                          filterable
-                          ref="select1"
-                        >
-                            <Option v-for="item in agentList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                        </Select>
-                    </div>
-                </div>
-                <div class="search_item">
-                    <div class="search_label">{{$t('company')}}</div>
-                    <div class="search_input">
-                        <Select 
-                          v-model="searchMes.partyId" 
-                          @on-change="selectCompany" 
-                          clearable 
-                          style="width:200px"
-                          filterable
-                          ref="select2"
-                        >
-                            <Option v-for="item in companyList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                        </Select>
-                    </div>
-                </div>
-                <div class="search_item">
-                    <div class="search_label">{{$t('account')}}</div>
-                    <div class="search_input">
-                        <Select 
-                          v-model="searchMes.uid" 
-                          clearable 
-                          style="width:200px"
-                          filterable
-                          ref="select3"
-                        >
-                        <Option v-for="item in userList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                        </Select>
-                    </div>
-                </div>
-                <div class="moreSearch">
-                    <a @click="reset">{{$t('reset')}}</a>
-                </div>
-            </div>
-
         </Card>
     	<div class="content" ref='content'>
-           
-            <div class="table">
-                <Table :columns="columns" :data="tableData"></Table>
-            </div>  
-            
+          <Table :columns="columns" :data="tableData"></Table>           
       </div>
       <div class="pages">
           <div>
@@ -123,7 +66,7 @@
 </template>
 
 <script type="ecmascript-6">
-import { queryCreditRecord,setCreditRecordRemark,queryAgentCompanyShort,queryUserPartyCompanyShort,queryUserBasicShort } from '@/api/details-manage'
+import { queryCreditRecordAgent,setCreditRecordRemark,queryAgentCompanyShort,queryUserPartyCompanyShort,queryUserBasicShort } from '@/api/details-manage'
 import { getSession} from '@/api/user'
 import {dateFormat} from '@/libs/tools'
 import { mapMutations } from 'vuex'
@@ -149,41 +92,41 @@ export default {
                 },
                 
                 {
-                  title: this.$t('register_firm_name_label'),
-                  key: 'companyName',
+                  title: this.$t('turn_out'),
+                  key: 'myName',
                   ellipsis: true,
                   render: (h, params) => {
                     return h('Tooltip', {
                       props: { placement: 'top-start' }
                     }, [
-                      params.row.companyName,
-                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.companyName)
+                      params.row.myName,
+                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.myName)
                     ])
                   }
                 },
                 {
-                  title: this.$t('user_name'),
-                  key: 'uname',
+                  title: this.$t('turn_in'),
+                  key: 'objName',
                   ellipsis: true,
                   render: (h, params) => {
                     return h('Tooltip', {
                       props: { placement: 'top-start' }
                     }, [
-                      params.row.uname,
-                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.uname)
+                      params.row.objName,
+                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.objName)
                     ])
                   }
                 },
                 {
                   title: this.$t('alarmType'),
-                  key: 'busiType',
+                  key: 'busiState',
                   ellipsis: true,
                   render: (h, params) => {
                     return h('Tooltip', {
                       props: { placement: 'top-start' }
                     }, [
-                      params.row.busiType,
-                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.busiType)
+                      params.row.busiState,
+                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.busiState)
                     ])
                   }
                 },
@@ -229,14 +172,14 @@ export default {
                 },
                 {
                   title: this.$t('operator'),
-                  key: 'agentUname',
+                  key: 'dealName',
                   ellipsis: true,
                   render: (h, params) => {
                     return h('Tooltip', {
                       props: { placement: 'top-start' }
                     }, [
-                      params.row.agentUname,
-                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.agentUname)
+                      params.row.dealName,
+                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.dealName)
                     ])
                   }
                 },
@@ -279,28 +222,23 @@ export default {
             remarkDesc:'',
             logId:'',
             searchMes:{
-                busiType:'',
+                busiState:'',
                 date:['',''],
                 agentId:'',
-                partyId:'',
-                uid:''
+                agentName:''
             },
-            busiTypeList:[
+            busiStateList:[
                 {
                   value:'',
                   label:this.$t('all')
                 },
                 {
                   value:'1',
-                  label:this.$t('busiType1')
+                  label:this.$t('recharge_in')
                 },
                 {
                   value:'2',
-                  label:this.$t('busiType2')
-                },
-                {
-                  value:'3',
-                  label:this.$t('busiType3')
+                  label:this.$t('recharge_out')
                 }
             ],
             page:{
@@ -345,13 +283,17 @@ export default {
             userList:[],
             loading1:false,
             loading2:false,
-            loading3:false
+            loading3:false,
+            treeDate:[],
+            agentTreeSearchText:'',
+            showTreeSpin:false,
+            showTree:false
         }
     },
    
     created:function(){
         this.queryCreditRecord()
-        this.quertAgentList()
+        this.queryAgentList({parentId:0})
         
     },
     methods: {
@@ -360,15 +302,12 @@ export default {
             let params={
                 page:this.page.current,
                 rows:this.page.size,
-                agentUname:this.searchMes.agentUname,
-                busiType:this.searchMes.busiType,
+                busiState:this.searchMes.busiState,
                 startDate:this.searchMes.date[0]?dateFormat(new Date(this.searchMes.date[0]),'yyyy-MM-dd'):'',
                 endDate:this.searchMes.date[1]?dateFormat(new Date(this.searchMes.date[1]),'yyyy-MM-dd'):'',
-                agentId:this.searchMes.agentId,
-                partyId:this.searchMes.partyId,
-                uid:this.searchMes.uid
+                agentId:this.searchMes.agentId
             }
-            queryCreditRecord(params)
+            queryCreditRecordAgent(params)
             .then((res)=>{
                 if(res.data.code==0){
                     _this.page.total = res.data.count
@@ -383,24 +322,56 @@ export default {
                 if(!data[i].authMonth){
                     data[i].authMonth = 0
                 }
-                if(data[i].ccsUid){
-                    data[i].companyName=data[i].agentName
-                    data[i].agentUname=data[i].ccsUname
-                }
                 data[i].createTime = dateFormat(new Date(data[i].createTime),'yyyy-MM-dd hh:mm:ss')
-                switch(data[i].busiType){
+                
+                // busiType : 1=代理商充企业  2=代理商充代理商   3=客服充代理商
+                // busiState : 1=充入  2=充出 
+                // dealname=处理人名字   myName=所查企业名字    objName=充入火充出对象名字
+
+                if(data[i].busiType==1){//代理商充企业
+                    if(data[i].busiState==2){
+                        data[i].dealName = data[i].agentUname
+                        data[i].myName = data[i].agentName
+                        data[i].objName = data[i].companyName+"【"+data[i].uname+"】"    
+                    }else{
+                        data[i].dealName = data[i].agentUname
+                        data[i].myName = data[i].companyName+"【"+data[i].uname+"】" 
+                        data[i].objName = data[i].agentName 
+                    }
+                   
+                }else if(data[i].busiType==2){//代理商充代理商
+                    if(data[i].busiState==2){//充出
+                      data[i].dealName = data[i].agentUname
+                      data[i].myName = data[i].agentName
+                      data[i].objName = data[i].companyName
+                    }else{//充入
+                      data[i].dealName = data[i].agentUname
+                      data[i].myName = data[i].companyName
+                      data[i].objName = data[i].agentName
+                    }
+                    
+                }else if(data[i].busiType==3){//客服充代理商
+                    if(data[i].busiState==2){//充出
+                        data[i].dealName = data[i].ccsUname
+                        data[i].myName = this.$t('customer_service')
+                        data[i].objName = data[i].companyName
+                        
+                    }else{
+                        data[i].dealName = data[i].ccsUname
+                        data[i].myName = data[i].companyName
+                        data[i].objName = this.$t('customer_service')
+                    }
+                    
+                }
+                switch(data[i].busiState){
                     case 1:
-                        data[i].busiType = this.$t('busiType1');
+                        data[i].busiState = this.$t('recharge_in');
                         break;
                     case 2:
-                        data[i].busiType = this.$t('busiType2');
-                        break;
-                    case 3:
-                        data[i].busiType = this.$t('busiType3');
+                        data[i].busiState = this.$t('recharge_out');
                         break;
                 }
             }
-
             this.tableData=data
         },
         changePage(current){
@@ -444,85 +415,68 @@ export default {
                 this.$refs.content.style.top='70px';
             }
         },
-        quertAgentList(param){
+        queryAgentList(param){
+            this.showTreeSpin=true
             let _this = this
-            _this.agentList = []
+            _this.treeDate = []
             queryAgentCompanyShort(param)
             .then((res)=>{
                 if(res.data.code==0){
                     res.data.obj.forEach(function(item){
                         let obj = {
-                            value : item[0],
-                            label : item[1]
+                            id : item.agentId,
+                            title : item.companyName
                         }
-                        _this.agentList.push(obj)
+                        if(item.isParent){
+                          obj.loading=false
+                          obj.children=[]
+                        }
+                        _this.treeDate.push(obj)
                     })
+                    _this.showTreeSpin=false
                 }
             })
         },
-        quertCompanyList(param){
-            let _this = this
-            _this.companyList = []
-            queryUserPartyCompanyShort(param).
-            then((res)=>{
-              if(res.data.code==0){
-                res.data.obj.forEach(function(item){
-                    let obj = {
-                        value : item[0],
-                        label : item[1]
-                    }
-                    _this.companyList.push(obj)
-                })
-              }
-            })
+        getChildAgent(item,callback){
+          // console.log(item)
+          queryAgentCompanyShort({parentId:item.id})
+          .then((res)=>{
+              let result = []
+              // console.log(res.dzata.obj)
+              res.data.obj.forEach(function(item){
+                  let obj = {
+                    id : item.agentId,
+                    title : item.companyName
+                  }
+                  if(item.isParent){
+                    obj.loading=false
+                    obj.children=[]
+                  }
+                  result.push(obj)
+              })
+              callback(result)
+          })
         },
-        quertUserList(param){
-            let _this = this
-            _this.userList= []
-            queryUserBasicShort(param).
-            then((res)=>{
-              if(res.data.code==0){
-
-                res.data.obj.forEach(function(item){
-                    let obj = {
-                        value : item[0],
-                        label : item[1]
-                    }
-                    _this.userList.push(obj)
-                })
-              }
-            })
+        agentTreeSearch(){
+            let param = this.agentTreeSearchText==''?{parentId:0}:{companyName:this.agentTreeSearchText}
+            this.queryAgentList(param)
         },
-        selectAgent(data){
-            this.companyList=[]
-            this.userList=[]
-            this.searchMes.partyId=''
-            this.searchMes.uid=''
-            if(data){
-              this.quertCompanyList({agentId:data})
-            }
-            
+        clickTreeNode(param){
+            this.showTree=false
+            this.searchMes.agentId=param[0].id
+            this.searchMes.agentName=param[0].title
         },
-        selectCompany(data){
-            this.userList=[]
-            this.searchMes.uid=''
-            if(data){
-              this.quertUserList({partyId:data})
-            }
-        },
-        reset(){
-          this.searchMes={
-                busiType:'',
-                date:['',''],
+        clearSearchAgent(){
+          if(this.searchMes.agentName==''){
+            this.searchMes.id=''
+            this.showTree = false
           }
-          this.$refs.select1.clearSingleSelect()
-          this.$refs.select2.clearSingleSelect()
-          this.$refs.select3.clearSingleSelect()
-          this.companyList=[]
-          this.userList=[]
         }
     },
     computed:{
+        Search:function(){
+            return this.$t('search')
+        },
         enterRemark:function(){
             return this.$t('enterRemark')
         },

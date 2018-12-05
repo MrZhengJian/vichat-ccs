@@ -32,8 +32,8 @@
         <div class="content">
             <div class="btns">
                
-                <Button type="primary" @click="batchImportModal">{{$t('account_import')}}</Button>
-                <Button type="primary" @click="assign">{{$t('assign')}}</Button>
+                <Button type="primary" @click="batchImportModal(0)">{{$t('account_import')}}</Button>
+                <Button type="primary" @click="batchImportModal(1)">{{$t('assign')}}</Button>
             </div>
             <div class="tableBox">
                 <Table @on-selection-change="tableSelection" ref="selection" :columns="tableColums" :data="tableData"></Table>
@@ -56,7 +56,7 @@
             </div>
         </div>
         <!-- 批量导入 -->
-        <Modal :title="batchImport" v-model="modal11" :width="800">
+        <Modal :title="modal11Title" v-model="modal11" :width="800">
             <div class="example1">
                 <span style="display:inline-block;text-align:right;">{{$t('agent')}}：</span>
                 <Select filterable v-model="importAgentId" style="width:300px">
@@ -305,7 +305,8 @@ export default {
             uploadTableDataContent:[],
             assignAgentId:'',
             importAgentId:'',
-            agentList:[]
+            agentList:[],
+            modal11Title:this.$t('user_table_btn_batchImport')
     	}
     },
 
@@ -351,9 +352,15 @@ export default {
                 item.resState=item.resState==_this.$t('used')?0:1
             })
         },
-        batchImportModal(){
+        batchImportModal(n){
+            if(n){
+                this.modal11Title = this.$t('assign')
+            }else{
+                this.modal11Title = this.$t('user_table_btn_batchImport')
+            }
             this.modal11 = true
-            this.batchImportContent=''
+            this.uploadTableDataContent=[]
+            this.c=''
             this.$refs.uploadExcel.initUpload()
         },
         uploadTableData(data){
@@ -372,24 +379,54 @@ export default {
         },
         sendBatchImport(){
             let _this = this
-            if(this.uploadTableDataContent.length==0){
-                this.$Message.error(this.$t('user_table_import_Content_error'))
-                return
-            }
-            batchCheckSN({'agentId':this.importAgentId,'snResources':this.uploadTableDataContent})
-            .then(function(res){
-                // console.log(res)
-                if(res.data.code==0){
-                    _this.modal11 = false
-                    _this.modal12 = true
-                    _this.turnDate(res.data.data.errorUsers)
-                    _this.turnDate(res.data.data.successUsers)
-                    _this.errorCount = res.data.data.errorUsers.length
-                    _this.importFailureData = res.data.data.errorUsers
-                    _this.successCount = res.data.data.successUsers.length
-                    _this.importSuccessData = res.data.data.successUsers
+            if(this.modal11Title == this.$t('user_table_btn_batchImport')){
+                if(this.uploadTableDataContent.length==0){
+                    this.$Message.error(this.$t('user_table_import_Content_error'))
+                    return
                 }
-            })
+                batchCheckSN({'agentId':this.importAgentId,'snResources':this.uploadTableDataContent})
+                .then(function(res){
+                    // console.log(res)
+                    if(res.data.code==0){
+                        _this.modal11 = false
+                        _this.modal12 = true
+                        _this.turnDate(res.data.data.errorUsers)
+                        _this.turnDate(res.data.data.successUsers)
+                        _this.errorCount = res.data.data.errorUsers.length
+                        _this.importFailureData = res.data.data.errorUsers
+                        _this.successCount = res.data.data.successUsers.length
+                        _this.importSuccessData = res.data.data.successUsers
+                    }
+                })
+            }
+            
+            if(this.modal11Title == this.$t('assign')){
+                if(this.importAgentId==''){
+                    this.$Message.error(this.$t('user_table_import_agentId_error'))
+                    return
+                }
+                if (this.selection.length == 0 && this.uploadTableDataContent.length==0){
+                    this.$Message.error(this.$t('user_table_import_Content_error'))
+                    return
+                }
+                if (this.selection.length != 0 ) {
+                    // console.log(this.selection)
+                    let _this = this 
+                    let used = false
+                    this.selection.forEach(function(item){
+                        if(item.resState== 0){
+                            used = true
+                        }
+                    })
+                    if(used){
+                        _this.$Message.error(_this.$t('usedError'))
+                        return
+                    }
+                }
+                this.sendAssign()
+            }
+
+            
         },
         turnDate(arr){
             for(let i=0;i<arr.length;i++){
@@ -439,36 +476,19 @@ export default {
                 
             })
         },
-        assign(){
-            let _this = this 
-            let used = false
-            this.selection.forEach(function(item){
-                if(item.resState== 0){
-                    used = true
-                }
-            })
-            if(used){
-                _this.$Message.error(_this.$t('usedError'))
-                return
-            }
-            if (this.selection.length == 0) {
-                this.$Message.warning(this.$t('user_table_select_warning'))
-            } else {
-                this.modal1 = true
-            }
-        },
         sendAssign(){
             let _this = this
+            let data = Object.assign({},this.uploadTableDataContent,this.selection)
             let param = {
-                agentId:this.assignAgentId,
-                snResources:this.selection
+                agentId:this.importAgentId,
+                snResources:data
             }
             assignSN(param).
             then((res)=>{
                 if(res.data.code==0){
                     _this.$Message.success(_this.$t('assignSuccess'))
                     _this.getSnResources()
-                    _this.modal2 = false
+                    _this.modal11 = false
 
                 }
             })
