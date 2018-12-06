@@ -66,7 +66,7 @@
                     </span>
                     <div class="selectOrg-content">
                         <Select v-model='priority' clearable>
-                            <Option v-for="item in priorityList" :value="item.value" :key="item.value">{{ item.desc }}</Option>
+                            <Option :disabled="item.value==10" v-for="item in priorityList" :value="item.value" :key="item.value">{{ item.desc }}</Option>
                         </Select>
 
                     </div>
@@ -145,8 +145,8 @@
                     </Select>
                 </FormItem>
                 <FormItem :label="priorityLabel" >
-                    <Select v-model="empMes.priority" style="width:300px" >
-                        <Option v-for="item in priorityList" :value="item.value" :key="item.value">{{ item.desc }}</Option>
+                    <Select :disabled="empMes.priority==10"  v-model="empMes.priority" style="width:300px" >
+                        <Option :disabled="item.value==10" v-for="item in priorityList" :value="item.value" :key="item.value">{{ item.desc }}</Option>
                     </Select>
                 </FormItem>
                 <FormItem :label="timelenLabel" style="width:300px">
@@ -341,6 +341,10 @@ export default {
             },
             priorityList:[
                 {
+                    value: 10,
+                    desc:this.$t('highest')  
+                },
+                {
                     value: 3,
                     desc:this.$t('high') 
                 },
@@ -351,7 +355,8 @@ export default {
                 {
                     value: 1,
                     desc:this.$t('low')  
-                },
+                }
+                
             ],
             adminGradeList:[
                 {
@@ -428,6 +433,9 @@ export default {
                         case 1:
                             this.personData[i].priority = this.$t('low') 
                             break;
+                        case 10:
+                            this.personData[i].priority = this.$t('highest') 
+                            break;
                     }
                     switch(this.personData[i].adminGrade){
                         case 5:
@@ -487,6 +495,9 @@ export default {
                     break;
                 case this.$t('low') :
                     this.empMes.priority = 1
+                    break;
+                case this.$t('highest') :
+                    this.empMes.priority = 10
                     break;
             }
             switch(params.row.adminGrade){

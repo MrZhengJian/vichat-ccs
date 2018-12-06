@@ -298,7 +298,7 @@ export default {
       channelForm: {
         rid: null,
         name: '',
-        style: -1,
+        style: 1,
         pttCtrl: 1,
         capacity: 1000
       },
@@ -529,7 +529,7 @@ export default {
       this.channelForm = {
         rid: null,
         name: '',
-        style: -1,
+        style: 1,
         pttCtrl: 1,
         capacity: 1000
       }

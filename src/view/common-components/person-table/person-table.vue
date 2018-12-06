@@ -59,7 +59,10 @@
                 <org-tree v-show="show" :partyId='mypartyId' v-on:changeOrg="addUserChangeOrg"></org-tree>
                 <FormItem :label="user_table_modal1_userType_label" prop="type">
                     <Select v-model="empMes.userType" style="width:300px" >
-                        <Option v-for="item in employee_type_List" :disabled="(item.value==1)"  :value="item.value" :key="item.value">{{ item.label }}</Option>
+                        <Option disabled value="1" key="1">{{ $t('employee_type_List1') }}</Option>
+                        <Option disabled value="2" key="2">{{ $t('employee_type_List2') }}</Option>
+                        <Option value="3" key="3">{{ $t('employee_type_List3') }}</Option>
+                        <Option value="4" key="4">{{ $t('employee_type_List4') }}</Option>
                     </Select>
                 </FormItem>
               
@@ -94,8 +97,11 @@
                     <Input type="text" :maxlength='20' v-model="empMes.userName" style="width: 300px"></Input>
                 </FormItem>
                 <FormItem :label="user_table_modal1_userType_label" prop="type">
-                    <Select v-model="empMes.userType" :disabled="UTdisabled" style="width:300px">
-                        <Option v-for="item in employee_type_List" :disabled="(item.value==1)" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    <Select disabled v-model="empMes.userType" style="width:300px">
+                        <Option value="1" key="1">{{ $t('employee_type_List1') }}</Option>
+                        <Option value="2" key="2">{{ $t('employee_type_List2') }}</Option>
+                        <Option value="3" key="3">{{ $t('employee_type_List3') }}</Option>
+                        <Option value="4" key="4">{{ $t('employee_type_List4') }}</Option>
                     </Select>
                 </FormItem>
                 <FormItem :label="user_table_modal1_tel_label">
@@ -623,14 +629,6 @@ data () {
       },
       employee_type_List: [
             {
-              value: '1',
-              label: this.$t('employee_type_List1')
-            },
-            {
-              value: '2',
-              label: this.$t('employee_type_List2')
-            },
-            {
               value: '3',
               label: this.$t('employee_type_List3')
             },
@@ -971,9 +969,10 @@ methods: {
       this.empMes.userType = this.personData[index].userType + ''
       this.empMes.mobile = this.personData[index].mobile
       this.empMes.sex = this.personData[index].sex
-      this.UTdisabled = this.personData[index].userType=='1'?true:false
+      // this.UTdisabled = this.personData[index].userType=='1'?true:false
       // console.log(this.personData[index].expiredDate)
       this.empMes.expiredDate = dateFormat(new Date(this.personData[index].expiredDate), 'yyyy-MM-dd')
+      console.log(this.empMes.userType)
     },
     // 确认修改
     sendModify () {

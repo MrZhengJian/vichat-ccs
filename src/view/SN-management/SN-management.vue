@@ -31,9 +31,9 @@
         </Card>
         <div class="content">
             <div class="btns">
-               
                 <Button type="primary" @click="batchImportModal(0)">{{$t('account_import')}}</Button>
-                <Button type="primary" @click="batchImportModal(1)">{{$t('assign')}}</Button>
+                <Button type="primary" @click="batchImportModal(1)">{{$t('account_import')}}{{$t('assign')}}</Button>
+                <Button type="primary" @click="assign">{{$t('assign')}}</Button>
             </div>
             <div class="tableBox">
                 <Table @on-selection-change="tableSelection" ref="selection" :columns="tableColums" :data="tableData"></Table>
@@ -105,7 +105,7 @@
             >
             <div style="margin:15px 0">
                 <span style="display:inline-block;text-align:right;width:120px;">{{$t('agent')}}：</span>
-                <Select filterable v-model="assignAgentId" style="width:300px">
+                <Select filterable v-model="importAgentId" style="width:300px">
                     <Option v-for="item in agentList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
             </div>
@@ -127,10 +127,10 @@
            
             <h1 style="text-align:center;margin:10px;">{{$t('confirmAssign')}}</h1>
             <div slot="footer">
-                <Button  type="default" size="large" @click="modal1=false">
+                <Button  type="default" size="large" @click="modal2=false">
                     {{$t('cancel')}}
                 </Button>
-                <Button type="primary" size="large" @click="sendAssign">
+                <Button type="primary" size="large" @click="sendAssign(selection)">
                     {{$t('ok')}}
                 </Button>
             </div>
@@ -206,6 +206,19 @@ export default {
                     }, [
                       params.row.snType,
                       h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.snType)
+                    ])
+                  }
+                },
+                {
+                  title: this.$t('company'),
+                  key: 'agentCompanyName',
+                  ellipsis: true,
+                  render: (h, params) => {
+                    return h('Tooltip', {
+                      props: { placement: 'top-start' }
+                    }, [
+                      params.row.agentCompanyName,
+                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.agentCompanyName)
                     ])
                   }
                 },
@@ -303,8 +316,8 @@ export default {
             ],
             importFailureData:[],
             uploadTableDataContent:[],
-            assignAgentId:'',
-            importAgentId:'',
+            assignAgentId:0,
+            importAgentId:0,
             agentList:[],
             modal11Title:this.$t('user_table_btn_batchImport')
     	}
@@ -409,21 +422,7 @@ export default {
                     this.$Message.error(this.$t('user_table_import_Content_error'))
                     return
                 }
-                if (this.selection.length != 0 ) {
-                    // console.log(this.selection)
-                    let _this = this 
-                    let used = false
-                    this.selection.forEach(function(item){
-                        if(item.resState== 0){
-                            used = true
-                        }
-                    })
-                    if(used){
-                        _this.$Message.error(_this.$t('usedError'))
-                        return
-                    }
-                }
-                this.sendAssign()
+                this.sendAssign(this.uploadTableDataContent)
             }
 
             
@@ -476,9 +475,32 @@ export default {
                 
             })
         },
-        sendAssign(){
+        assign(){
+            if(this.selection.length==0){
+                this.$Message.error(this.$t('user_table_select_warning'))
+                return
+            }
+            let used = false
+            let assign = false
+            this.selection.forEach(function(item){
+                if(item.agentCompanyName&&item.agentCompanyName!=""){
+                    assign = true
+                }
+                if(item.resState==0){
+                    used = true
+                }
+            })
+            if(assign){
+                this.$Message.warning(this.$t('usedError'))
+            }
+            if(used){
+                this.$Message.warning(this.$t('usedError1'))
+            }
+            this.modal1 = true
+        },
+        sendAssign(data){
             let _this = this
-            let data = Object.assign({},this.uploadTableDataContent,this.selection)
+            // let data = Object.assign({},this.uploadTableDataContent,this.selection)
             let param = {
                 agentId:this.importAgentId,
                 snResources:data
@@ -489,6 +511,7 @@ export default {
                     _this.$Message.success(_this.$t('assignSuccess'))
                     _this.getSnResources()
                     _this.modal11 = false
+                    _this.modal1 = false
 
                 }
             })

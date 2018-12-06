@@ -48,7 +48,7 @@ export default [
     name: '_agent_management',
     component: Main,
     meta: {
-      title: i18n.t('customer_service'),
+      title: i18n.t('agent_management'),
     },
     children: [
       {
@@ -69,7 +69,7 @@ export default [
     name: 'management',
     component: Main,
     meta: {
-      title: i18n.t('customer_service'),
+      title: i18n.t('company'),
     },
     children: [ 
         {
@@ -129,7 +129,7 @@ export default [
     name: 'SN',
     component: Main,
     meta: {
-      title: i18n.t('customer_service'),
+      title: i18n.t('SN_management'),
     },
     children: [
       {
@@ -138,7 +138,7 @@ export default [
         meta: {
           title: i18n.t('SN_management'),
           hideInMenu: false,
-          icon: 'md-contacts'
+          icon: 'md-flag'
         },
         component: () => import('@/view/SN-management/SN-management.vue')
       }
@@ -149,7 +149,7 @@ export default [
     name: '_details_management',
     component: Main,
     meta: {
-      icon: 'md-contacts',
+      icon: 'md-list',
       title: i18n.t('details_management'),
     },
     children: [
@@ -159,7 +159,7 @@ export default [
         meta: {
           title: i18n.t('agent_charge'),
           hideInMenu: false,
-          icon: 'md-contacts'
+          icon: 'md-list-box'
         },
         component: () => import('@/view/details-management/agent-charge/agent-charge.vue')
       },
@@ -169,7 +169,7 @@ export default [
         meta: {
           title: i18n.t('company_charge'),
           hideInMenu: false,
-          icon: 'md-contacts'
+          icon: 'ios-list-box'
         },
         component: () => import('@/view/details-management/company-charge/company-charge.vue')
       },
