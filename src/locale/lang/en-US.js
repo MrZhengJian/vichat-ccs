@@ -1,4 +1,6 @@
 export default {
+	current_page:'Current Page',
+	selected_item:'Selected',
 	free_type:'Charge Type',
 	free_by_number:'Number',
 	free_by_date:'Expire Date',

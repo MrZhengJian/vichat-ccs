@@ -1,4 +1,6 @@
 export default {
+	current_page:'当前页',
+	selected_item:'所选项',
 	free_type:'收费类型',
 	free_by_number:'账号个数',
 	free_by_date:'有效期',
