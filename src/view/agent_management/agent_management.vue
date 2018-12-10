@@ -17,9 +17,6 @@
                 <div class="search_item">
                     <Button type='primary' @click="queryAgentCompany">{{$t('search')}}</Button>
                 </div>
-                <!-- <div class="moreSearch">
-                    <a @click="showMoreSearch">{{moreSearch}}</a>
-                </div> -->
             </div>
 
         </Card>
