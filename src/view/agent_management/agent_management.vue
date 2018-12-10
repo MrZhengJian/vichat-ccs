@@ -126,6 +126,7 @@ import { mapMutations } from 'vuex'
 export default {
     data () {
         const validateAccount = (rule, value, callback) => {
+            value = value.trim()
             if (value === '') {
                 callback(new Error(this.$t('cannotEmpty')));
             } else if (value.length>20) {
@@ -137,6 +138,7 @@ export default {
             }
         };
         const validatePassword = (rule, value, callback) => {
+            value = value.trim()
             if (value === '') {
                 callback(new Error(this.$t('cannotEmpty')));
             } else if (value.length>18 || value.length<6) {
@@ -148,6 +150,7 @@ export default {
             }
         };
         const validateRepassword = (rule, value, callback) => {
+            value = value.trim()
             if (value === '') {
                 callback(new Error(this.$t('cannotEmpty')));
             } else if (value.length>18 || value.length<6) {
@@ -161,6 +164,7 @@ export default {
             }
         };
         const validateUserName = (rule, value, callback) => {
+            value = value.trim()
             if (value === '') {
                 callback(new Error(this.$t('cannotEmpty')));
             } else if (value.length>20) {
@@ -170,6 +174,7 @@ export default {
             }
         };
         const validateUserName1 = (rule, value, callback) => {
+            value = value.trim()
             if (value === '') {
                 callback();
             } else if (value.length>20) {

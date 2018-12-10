@@ -88,6 +88,7 @@
                     :listStyle="listStyle"
                     :titles="transferTitle"
                     filterable
+                    :filter-method="filterMethod"
                     :operations="transferOperations"
                     @on-change="_onChange"
                     @on-selected-change="onSelectedChange"
@@ -145,8 +146,8 @@
                     </Select>
                 </FormItem>
                 <FormItem :label="priorityLabel" >
-                    <Select :disabled="empMes.priority==10"  v-model="empMes.priority" style="width:300px" >
-                        <Option :disabled="item.value==10" v-for="item in priorityList" :value="item.value" :key="item.value">{{ item.desc }}</Option>
+                    <Select v-model="empMes.priority" style="width:300px" >
+                        <Option :disabled='item.value==10&&empMes.adminGrade!=10' v-for="item in priorityList" :value="item.value" :key="item.value">{{ item.desc }}</Option>
                     </Select>
                 </FormItem>
                 <FormItem :label="timelenLabel" style="width:300px">
@@ -752,6 +753,11 @@ export default {
         changePageSize(current){
             this.pages.rows = current
             this._getTableData()
+        },
+        filterMethod(data, query){
+            data = data.label
+            query = query.toLowerCase()
+            return data.toLowerCase().indexOf(query) > -1;
         }
 	}
 }
