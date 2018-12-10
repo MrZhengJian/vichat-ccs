@@ -104,13 +104,26 @@
                 <Button type="primary" size="large" @click="saveModify">{{$t('ok')}}</Button>
             </div>
         </Modal>
-      
+        <!-- 行内删除提示 -->
+        <Modal :title="modal3_title" v-model="modal13">
+            <p style="margin:20px 0;text-align:center;font-size:20px">
+                {{$t('user_table_modal7_content')}}
+            </p>
+            <div slot="footer">
+                <Button type="default" size="large" @click="modal13=false">
+                    {{$t('cancel')}}
+                </Button>
+                <Button type="primary" size="large" @click="confirmDeletion">
+                    {{$t('ok')}}
+                </Button>
+            </div>
+        </Modal>
     </div>
     
 </template>
 
 <script type="ecmascript-6">
-import { queryCompany,batchUpdateCompanyExpiredDate,saveCompany } from '@/api/agent'
+import { queryCompany,batchUpdateCompanyExpiredDate,saveCompany,deleteAgentCompany,deleteCompany } from '@/api/agent'
 import { registerCompany } from '@/api/register'
 import {dateFormat} from '@/libs/tools'
 import { mapMutations } from 'vuex'
@@ -186,7 +199,8 @@ export default {
             modal1:false,
             modal2:false,
             modal3:false,
-        	modal4:false,
+            modal4:false,
+        	modal13:false,
             selectionUid:[],
             selection:[],
         	searchMes:{
@@ -279,7 +293,7 @@ export default {
                     key: 'action',
                     align: 'center',
                     fixed: 'right',
-                    width:300,
+                    width:320,
                     render: (h, params) => {
                         return h('div', [
                             h('Button', 
@@ -349,7 +363,25 @@ export default {
                                         type: 'text',
                                         size: 'small'
                                     } 
-                                },this.$t('rec_tab_label1'))
+                                },this.$t('rec_tab_label1')),
+                            h('Button',
+                                {
+                                  on: {
+                                    click: () => {
+                                      this.partyId = params.row.partyId
+                                      this.modal13 = true
+                                    }
+                                  },
+                                  style: {
+                                    // display: this.accessList.company_del ? 'inline-block' : 'none',
+                                    color: '#F25E43',
+                                    cursor: 'pointer'
+                                  },
+                                  props: {
+                                    type: 'text',
+                                    size: 'small'
+                                  }
+                                }, this.$t('user_table_col_delete'))
                         ]);
                     }
                 }
@@ -557,6 +589,18 @@ export default {
             })
             
         },
+        confirmDeletion () {
+          let _this = this
+          // console.log(this.tableData[this.delIndex])
+          deleteCompany({partyId: this.partyId})
+            .then(res => {
+              if (res.data.code == 0) {
+                _this.$Message.success(_this.$t('user_table_delete_ok'))
+                _this.queryEdposCompany()
+                _this.modal13 = false
+              }
+            })
+        },
         clear(){
             this.form={
                 terminal:'',
@@ -570,6 +614,9 @@ export default {
         }
     },
     computed:{
+        modal3_title: function () {
+          return this.$t('user_table_modal3_title')
+        },
         register_firm_name_placeholder: function () {
           return this.$t('register_firm_name_placeholder')
         },

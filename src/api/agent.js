@@ -32,6 +32,13 @@ export const registerCompany = (params) => {
     data:params
   })
 }
+export const deleteCompany = (params) => {
+  return axios.request({
+    url: '/ccs/api/deleteCompany',
+    method: 'get',
+    params
+  })
+}
 
 export const batchUpdateCompanyExpiredDate = (params) => {
   return axios.request({
@@ -72,6 +79,13 @@ export const saveAgentCompany = (params) => {
   })
 }
 
+export const deleteAgentCompany = (params) => {
+  return axios.request({
+    url: '/ccs/api/deleteAgentCompany',
+    method: 'get',
+    params
+  })
+}
 // AGENT USERS
 export const queryAgentUser = (params) => {
   return axios.request({

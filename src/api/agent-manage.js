@@ -48,7 +48,13 @@ export const registerAgentCompany = (params) => {
     params
   })
 }
-
+export const deleteAgentCompany = (params) => {
+  return axios.request({
+    url: '/ccs/api/deleteAgentCompany',
+    method: 'get',
+    params
+  })
+}
 export const saveAgentCompany = (params) => {
   return axios.request({
     url: '/ccs/api/saveAgentCompany',

@@ -114,12 +114,26 @@
                 <Button type="primary" size="large" @click="sendRenew">{{$t('ok')}}</Button>
             </div>
         </Modal>
+        <!-- 行内删除提示 -->
+        <Modal :title="modal3_title" v-model="modal13">
+            <p style="margin:20px 0;text-align:center;font-size:20px">
+                {{$t('user_table_modal7_content')}}
+            </p>
+            <div slot="footer">
+                <Button type="default" size="large" @click="modal13=false">
+                    {{$t('cancel')}}
+                </Button>
+                <Button type="primary" size="large" @click="confirmDeletion">
+                    {{$t('ok')}}
+                </Button>
+            </div>
+        </Modal>
     </div>
     
 </template>
 
 <script type="ecmascript-6">
-import { queryCompany,queryAgentCompany,registerAgentCompany,batchUpdateCompanyExpiredDate,saveAgentCompany} from '@/api/agent-manage'
+import { queryCompany,queryAgentCompany,registerAgentCompany,batchUpdateCompanyExpiredDate,saveAgentCompany,deleteAgentCompany} from '@/api/agent-manage'
 import { getSession} from '@/api/user'
 import {dateFormat} from '@/libs/tools'
 import { mapMutations } from 'vuex'
@@ -293,6 +307,25 @@ export default {
                                         size: 'small'
                                     } 
                                 },this.$t('user_table_col_edit')),
+                            h('Button',
+                                {
+                                  on: {
+                                    click: () => {
+                                      // console.log(params)
+                                      this.agentId = params.row.agentId
+                                      this.modal13 = true
+                                    }
+                                  },
+                                  style: {
+                                    // display: this.accessList.child_agent_del ? 'inline-block' : 'none',
+                                    color: '#F25E43',
+                                    cursor: 'pointer'
+                                  },
+                                  props: {
+                                    type: 'text',
+                                    size: 'small'
+                                  }
+                                }, this.$t('user_table_col_delete'))
                         ]);
                     }
                 }
@@ -302,6 +335,8 @@ export default {
             modal2:false,
             modal3:false,
             modal4:false,
+            modal13:false,
+            agentId:'',
             searchMes:{
                 companyName:'',
                 account:''
@@ -494,8 +529,23 @@ export default {
             }
           }) 
         },
+        confirmDeletion () {
+          let _this = this
+          // console.log(this.tableData[this.delIndex])
+          deleteAgentCompany({agentId: this.agentId})
+            .then(res => {
+              if (res.data.code == 0) {
+                _this.$Message.success(_this.$t('user_table_delete_ok'))
+                _this.queryAgentCompany()
+                _this.modal13 = false
+              }
+            })
+        },
     },
     computed:{
+        modal3_title: function () {
+          return this.$t('user_table_modal3_title')
+        },
         remark:function(){
             return this.$t('remark')
         },

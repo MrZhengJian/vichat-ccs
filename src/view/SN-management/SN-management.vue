@@ -32,7 +32,7 @@
         <div class="content">
             <div class="btns">
                 <Button type="primary" @click="batchImportModal(0)">{{$t('account_import')}}</Button>
-                <Button type="primary" @click="batchImportModal(1)">{{$t('account_import')}}{{$t('assign')}}</Button>
+                <Button type="primary" @click="batchImportModal(1)">{{$t('account_import')}} {{$t('assign')}}</Button>
                 <Button type="primary" @click="assign">{{$t('assign')}}</Button>
             </div>
             <div class="tableBox">
@@ -90,11 +90,14 @@
                 </TabPane>
             </Tabs>
             <div slot="footer">
-                <Button  type="default" size="large" @click="modal12=false">
+                <Button v-if="n==0" type="default" size="large" @click="modal12=false">
                     {{$t('cancel')}}
                 </Button>
-                <Button  v-if="tabName=='name1'" type="primary" size="large" @click="batchSaveEdposUser">
+                <Button  v-if="n==0&&tabName=='name1'" type="primary" size="large" @click="batchSaveEdposUser">
                     {{$t('user_table_btn_batchImport')}}
+                </Button>
+                <Button v-if="n==1" type="primary" size="large" @click="modal12=false">
+                    {{$t('close')}}
                 </Button>
             </div>
         </Modal>
@@ -153,6 +156,7 @@ export default {
     },
     data () {
     	return{
+            n:0,  //导入结果modal中   0=导入  1=分配
             modal1: false, // 
             modal2: false, // 
             modal11: false, // 批量导入
@@ -366,6 +370,7 @@ export default {
             })
         },
         batchImportModal(n){
+            this.n = n
             if(n){
                 this.modal11Title = this.$t('assign')
             }else{
@@ -373,7 +378,7 @@ export default {
             }
             this.modal11 = true
             this.uploadTableDataContent=[]
-            this.c=''
+            // this.c=''
             this.$refs.uploadExcel.initUpload()
         },
         uploadTableData(data){
@@ -508,10 +513,18 @@ export default {
             assignSN(param).
             then((res)=>{
                 if(res.data.code==0){
-                    _this.$Message.success(_this.$t('assignSuccess'))
-                    _this.getSnResources()
                     _this.modal11 = false
-                    _this.modal1 = false
+                    _this.modal12 = true
+                    _this.turnDate(res.data.data.errorUsers)
+                    _this.turnDate(res.data.data.successUsers)
+                    _this.errorCount = res.data.data.errorUsers.length
+                    _this.importFailureData = res.data.data.errorUsers
+                    _this.successCount = res.data.data.successUsers.length
+                    _this.importSuccessData = res.data.data.successUsers
+                    // _this.$Message.success(_this.$t('assignSuccess'))
+                    // _this.getSnResources()
+                    _this.modal2 = false
+                    _this.modal11 = false
 
                 }
             })
