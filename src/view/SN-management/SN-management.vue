@@ -32,7 +32,7 @@
         <div class="content">
             <div class="btns">
                 <Button type="primary" @click="batchImportModal(0)">{{$t('account_import')}}</Button>
-                <Button type="primary" @click="batchImportModal(1)">{{$t('account_import')}} {{$t('assign')}}</Button>
+                <Button type="primary" @click="batchImportModal(1)">{{$t('account_import')}}{{$t('assign')}}</Button>
                 <Button type="primary" @click="assign">{{$t('assign')}}</Button>
             </div>
             <div class="tableBox">
@@ -497,9 +497,11 @@ export default {
             })
             if(assign){
                 this.$Message.warning(this.$t('usedError'))
+                return
             }
             if(used){
                 this.$Message.warning(this.$t('usedError1'))
+                return
             }
             this.modal1 = true
         },

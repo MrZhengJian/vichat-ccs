@@ -25,7 +25,7 @@
             <!-- <Button type="primary" @click="btnClick(3)">{{$t('user_table_btn_delete')}}</Button> -->
             <Button type="primary"  @click="btnClick(5)">{{$t('user_table_btn_org')}}</Button>
             <!-- <Button type="primary" @click="btnClick(8)">{{$t('user_table_col_role_assign')}}</Button> -->
-            <Button type="primary"  @click="btnClick(9)">{{$t('renew')}}</Button>
+            <Button type="primary" v-if="mycanRenew!='false'" @click="btnClick(9)">{{$t('renew')}}</Button>
             <Button type="primary" @click="openAddUser('3')">{{$t('add_terminal')}}</Button>
             <Button type="primary" @click="openAddUser('4')">{{$t('add_dispatcher')}}</Button>
             <Input search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
@@ -75,9 +75,9 @@
                 </div>
                 <org-tree v-show="show" :partyId='mypartyId' v-on:changeOrg="addUserChangeOrg"></org-tree>
                 <FormItem :label="user_table_modal1_userType_label" prop="type">
-                    <Select v-model="empMes.userType" style="width:300px" >
-                        <Option disabled value="1" key="1">{{ $t('employee_type_List1') }}</Option>
-                        <Option disabled value="2" key="2">{{ $t('employee_type_List2') }}</Option>
+                    <Select v-model="empMes.userType" disabled style="width:300px" >
+                        <Option value="1" key="1">{{ $t('employee_type_List1') }}</Option>
+                        <Option value="2" key="2">{{ $t('employee_type_List2') }}</Option>
                         <Option value="3" key="3">{{ $t('employee_type_List3') }}</Option>
                         <Option value="4" key="4">{{ $t('employee_type_List4') }}</Option>
                     </Select>
@@ -268,7 +268,7 @@
         </Modal>
         <!-- 批量导入 -->
         <Modal :title="batchImport" v-model="modal11" :width="800">
-            <a class="example" href="./example.xlsx">{{$t('Example')}}</a>
+            <a class="example"  href="./example.xlsx">{{$t('Example')}}</a>
             <upload-excel ref="uploadExcel" @uploadTableData="uploadTableData"></upload-excel>
             <div slot="footer">
                 <Button type="default" size="large" @click="modal11=false">
@@ -330,6 +330,9 @@ export default {
     },
     partyId:{
         required: true
+    },
+    canRenew:{
+        required: true
     }
   },
   components: {
@@ -339,7 +342,7 @@ export default {
   },
   created: function () {
     this._getMes()
-    
+    console.log(this.mycanRenew)
   },
   // mounted:function(){
   //   console.log(this.accessList)
@@ -407,6 +410,7 @@ data () {
       },
       renewMax:0,
       mypartyId:this.partyId,
+      mycanRenew:this.canRenew,
       EnterpriseUid:[],
       UTdisabled: false, // 修改信息时，当员工类型是企业管理员时，禁用员工类型select
       show: false, // 添加员工时的组织树
@@ -624,7 +628,7 @@ data () {
                         }
                       },
                       style: {
-                        // display: this.accessList.company_account_recharge?'inline-block':'none',
+                        display: this.mycanRenew!='false'?'inline-block':'none',
                         cursor: 'pointer',
                         // color: (this.personData[params.index].userType!='1'?'#ccc':'#2DB7F5')
                         color: '#2DB7F5'
@@ -811,7 +815,6 @@ methods: {
       this.empMes.orgId = arr.orgId
     },
     openAddUser (n) {
-      console.log(n)
       this.add_account=n=='3'?this.$t('add_terminal'):this.$t('add_dispatcher')
       this.clearEmp()
       this.empMes.orgName = this.orgMes.orgName

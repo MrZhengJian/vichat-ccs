@@ -5,13 +5,13 @@
                 <div class="search_item">
                     <div class="search_label">{{$t('name')}}</div>
                     <div class="search_input">
-                        <Input v-model="searchMes.companyName" :placeholder="agent_name_placeholder" />
+                        <Input v-model="searchMes.companyName" clearable :placeholder="agent_name_placeholder" />
                     </div>
                 </div>
                 <div class="search_item">
                     <div class="search_label">{{$t('user_table_modal1_account_label')}}</div>
                     <div class="search_input">
-                        <Input v-model="searchMes.account" :placeholder="agent_acount_placeholder" />
+                        <Input v-model="searchMes.account" clearable :placeholder="agent_acount_placeholder" />
                     </div>
                 </div>
                 <div class="search_item">
@@ -53,7 +53,7 @@
                     <Input type="text" v-model='form.url' :maxlength='40' :placeholder="contacts_palcehoolder" style="width:300px;"></Input>
                 </FormItem>
                 <FormItem :label="agent_address_label" prop="address">
-                    <Input type="text" v-model="form.address" :placeholder="agent_address_placeholder" style="width:300px;"></Input>
+                    <Input type="text" v-model="form.address" :maxlength='100' :placeholder="agent_address_placeholder" style="width:300px;"></Input>
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -80,7 +80,7 @@
                     <Input type="text" v-model='form.url' :maxlength='40' :placeholder="contacts_palcehoolder" style="width:300px;"></Input>
                 </FormItem>
                 <FormItem :label="agent_address_label" prop="address">
-                    <Input type="text" v-model="form.address" :placeholder="agent_address_placeholder" style="width:300px;"></Input>
+                    <Input type="text" v-model="form.address" :maxlength='100' :placeholder="agent_address_placeholder" style="width:300px;"></Input>
                 </FormItem>
             </Form>
             <div slot="footer">

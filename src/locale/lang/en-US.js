@@ -1,4 +1,5 @@
 export default {
+  edit_agent: 'Edit Agent',
   add_terminal: 'Add Terminal',
   add_dispatcher: 'Add Dispatcher',
   searchByUserType: 'Please select user type',
@@ -476,7 +477,6 @@ export default {
   Type_StyleId6: 'Alarm Group',
 
   channel_create_time: 'Create Time',
-  priority: 'Priority',
   talkable_time: 'Poc Time',
   video_time: 'Video Time',
   Infinite: 'Infinite',

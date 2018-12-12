@@ -19,7 +19,7 @@
             </Col>
             <Col span="20">
                 <Spin fix size="large" v-show="spin1"></Spin>
-                <person-table v-on:search="search" :orgMes="orgMes" :partyId="partyId" :newQuery="newQuery" :personData="personData" :total="total"></person-table>
+                <person-table v-on:search="search" :orgMes="orgMes" :partyId="partyId" :newQuery="newQuery" :personData="personData" :total="total" :canRenew="canRenew"></person-table>
             </Col>
         </Row> 
     </div>
@@ -39,6 +39,7 @@ export default {
     data () {
     	return{
             partyId:this.$route.params.partyId || localStorage.getItem('partyId'),
+            canRenew:this.$route.params.canRenew || localStorage.getItem('canRenew'),
             personData:[],
             total:0,
             searchParams:{

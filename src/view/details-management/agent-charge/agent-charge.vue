@@ -113,7 +113,7 @@ export default {
                       props: { placement: 'top-start' }
                     }, [
                       params.row.objName,
-                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.objName)
+                      h('span', { slot: 'content', style: { overflow:'hidden',textoverflow:'ellipsis',whiteSpace: 'nowrap', wordBreak: 'break-all' } }, params.row.objName)
                     ])
                   }
                 },

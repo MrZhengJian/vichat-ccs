@@ -481,14 +481,20 @@ export default {
             this.queryEdposCompany()
         },
         toUser(param){
+            let canRenew = false
+            if(!param.row.agentId){
+                canRenew = true
+            }
             localStorage.setItem('partyId',param.row.partyId)
             localStorage.setItem('companyName',param.row.companyName)
+            localStorage.setItem('canRenew',canRenew)
             this.setCompanyName(param.row.companyName)
             this.$router.push({
                 name:'user',
                 params:{ 
                     'partyId':param.row.partyId,
                     'companyName':param.row.companyName,
+                    'canRenew':canRenew
                 }
             });
         },
