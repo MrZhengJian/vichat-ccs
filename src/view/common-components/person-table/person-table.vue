@@ -26,9 +26,15 @@
             <Button type="primary"  @click="btnClick(5)">{{$t('user_table_btn_org')}}</Button>
             <!-- <Button type="primary" @click="btnClick(8)">{{$t('user_table_col_role_assign')}}</Button> -->
             <Button type="primary"  @click="btnClick(9)">{{$t('renew')}}</Button>
-            <Button type="primary"  @click="openAddUser">{{$t('user_table_btn_add')}}</Button>
-            <Input search enter-button @on-search="searchBox" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 250px;float:left"></Input>
-            
+            <Button type="primary" @click="openAddUser('3')">{{$t('add_terminal')}}</Button>
+            <Button type="primary" @click="openAddUser('4')">{{$t('add_dispatcher')}}</Button>
+            <Input search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
+            <Select clearable v-model="searchUserType" style="width:180px;float:left;margin-left:20px;" :placeholder="searchByUserType"  @on-change="searchBox(1)">
+                <Option value="1" key="1">{{ $t('employee_type_List1') }}</Option>
+                <Option value="2" key="2">{{ $t('employee_type_List2') }}</Option>
+                <Option value="3" key="3">{{ $t('employee_type_List3') }}</Option>
+                <Option value="4" key="4">{{ $t('employee_type_List4') }}</Option>
+            </Select>
         </p>
 		<div class="table-main">
             <Table ref="table" stripe @on-selection-change="tableSelection" :columns="columns" :data="tableData"></Table>
@@ -36,6 +42,7 @@
 		<div class="page">
 	        <div style="float: right;">
 	            <Page
+                  ref="pages"
                   @on-change="changePage"
                   @on-page-size-change="changePageSize"
                   :total='total'
@@ -388,6 +395,7 @@ data () {
     };
     return {
       allUser:[],
+      searchUserType:'',
       accessList:{
         "company_account_pwd":this.$store.state.user.funcObj.company_account_pwd||false,
         "company_account_edit":this.$store.state.user.funcObj.company_account_edit||false,
@@ -442,6 +450,7 @@ data () {
             locTime: []
       },
       modal1: false, // 添加员工
+      add_account:'',
       modal2: false, // 修改信息
       modal3: false, // 多选删除提示
       modal4: false, // 定位信息
@@ -801,10 +810,13 @@ methods: {
       this.empMes.orgName = arr.orgName
       this.empMes.orgId = arr.orgId
     },
-    openAddUser () {
+    openAddUser (n) {
+      console.log(n)
+      this.add_account=n=='3'?this.$t('add_terminal'):this.$t('add_dispatcher')
       this.clearEmp()
       this.empMes.orgName = this.orgMes.orgName
       this.empMes.orgId = this.orgMes.orgId
+      this.empMes.userType = n
       this.modal1 = true
       this.show = false
     },
@@ -1036,8 +1048,14 @@ methods: {
     changePageSize (pageSize) {
       this.$emit('search', ['limit', pageSize])
     },
-    searchBox () {
-      this.$emit('search', ['userName', this.searchTxt])
+    searchBox (n) {
+      this.$refs.pages.currentPage=1
+      if(n==0){
+        this.$emit('search', ['userName', this.searchTxt])
+      }else if(n==1){
+        this.$emit('search', ['userType', this.searchUserType])
+      }
+      
     },
     // 获取所有被选择的员工的uid
     tableSelection (selection) {
@@ -1214,6 +1232,9 @@ methods: {
     }
   },
   computed: {
+    searchByUserType:function () {
+      return this.$t('searchByUserType')
+    },
     renewPriceMax:function () {
       return parseInt(this.comRenewMax/this.renewLenth)
     },
@@ -1364,9 +1385,6 @@ methods: {
     },
     register_repeat_pwd_placeholder: function () {
       return this.$t('register_repeat_pwd_placeholder')
-    },
-    add_account: function () {
-      return this.$t('add_account')
     },
     current_balance: function () {
       return this.$t('current_balance')
