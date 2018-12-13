@@ -481,6 +481,7 @@ export default {
             })
         },
         assign(){
+            this.n = 1
             if(this.selection.length==0){
                 this.$Message.error(this.$t('user_table_select_warning'))
                 return
@@ -495,10 +496,10 @@ export default {
                     used = true
                 }
             })
-            if(assign){
-                this.$Message.warning(this.$t('usedError'))
-                return
-            }
+            // if(assign){
+            //     this.$Message.warning(this.$t('usedError'))
+            //     return
+            // }
             if(used){
                 this.$Message.warning(this.$t('usedError1'))
                 return
@@ -524,7 +525,7 @@ export default {
                     _this.successCount = res.data.data.successUsers.length
                     _this.importSuccessData = res.data.data.successUsers
                     // _this.$Message.success(_this.$t('assignSuccess'))
-                    // _this.getSnResources()
+                    _this.getSnResources()
                     _this.modal2 = false
                     _this.modal11 = false
 

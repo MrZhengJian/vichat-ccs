@@ -47,10 +47,10 @@
                     <Input type="text" v-model='form.adminName' :maxlength='20' :placeholder="contacts_palcehoolder" style="width:300px;"></Input>
                 </FormItem>
                 <FormItem :label="contacts_number" prop="mobile">
-                    <Input type="text" v-model="form.mobile" :placeholder="user_table_modal1_tel_placeholder" style="width:300px;"></Input>
+                    <Input type="text" v-model="form.mobile" :maxlength='100' :placeholder="user_table_modal1_tel_placeholder" style="width:300px;"></Input>
                 </FormItem>
                 <FormItem label="URL" prop="url">
-                    <Input type="text" v-model='form.url' :maxlength='40' :placeholder="contacts_palcehoolder" style="width:300px;"></Input>
+                    <Input type="text" v-model='form.url' :maxlength='40' style="width:300px;"></Input>
                 </FormItem>
                 <FormItem :label="agent_address_label" prop="address">
                     <Input type="text" v-model="form.address" :maxlength='100' :placeholder="agent_address_placeholder" style="width:300px;"></Input>
@@ -74,10 +74,10 @@
                     <Input type="text" v-model='form.adminName' :maxlength='20' :placeholder="contacts_palcehoolder" style="width:300px;"></Input>
                 </FormItem>
                 <FormItem :label="contacts_number" prop="mobile">
-                    <Input type="text" v-model="form.mobile" :placeholder="user_table_modal1_tel_placeholder" style="width:300px;"></Input>
+                    <Input type="text" v-model="form.mobile" :maxlength='100' :placeholder="user_table_modal1_tel_placeholder" style="width:300px;"></Input>
                 </FormItem>
                 <FormItem label="URL" prop="url">
-                    <Input type="text" v-model='form.url' :maxlength='40' :placeholder="contacts_palcehoolder" style="width:300px;"></Input>
+                    <Input type="text" v-model='form.url' :maxlength='40' style="width:300px;"></Input>
                 </FormItem>
                 <FormItem :label="agent_address_label" prop="address">
                     <Input type="text" v-model="form.address" :maxlength='100' :placeholder="agent_address_placeholder" style="width:300px;"></Input>

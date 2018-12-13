@@ -20,14 +20,14 @@
                     <DropdownItem name='3'>{{$t('selected_item')}}</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
-            <Button type="primary"  @click="batchImportModal">{{$t('user_table_btn_batchImport')}}</Button>
+            <Button type="primary" v-if="mycanRenew!='false'" @click="batchImportModal">{{$t('user_table_btn_batchImport')}}</Button>
             <!-- <Button type="primary" @click="btnClick(4)">{{$t('user_table_btn_location')}}</Button> -->
             <!-- <Button type="primary" @click="btnClick(3)">{{$t('user_table_btn_delete')}}</Button> -->
             <Button type="primary"  @click="btnClick(5)">{{$t('user_table_btn_org')}}</Button>
             <!-- <Button type="primary" @click="btnClick(8)">{{$t('user_table_col_role_assign')}}</Button> -->
             <Button type="primary" v-if="mycanRenew!='false'" @click="btnClick(9)">{{$t('renew')}}</Button>
-            <Button type="primary" @click="openAddUser('3')">{{$t('add_terminal')}}</Button>
-            <Button type="primary" @click="openAddUser('4')">{{$t('add_dispatcher')}}</Button>
+            <Button type="primary" v-if="mycanRenew!='false'" @click="openAddUser('3')">{{$t('add_terminal')}}</Button>
+            <Button type="primary" v-if="mycanRenew!='false'" @click="openAddUser('4')">{{$t('add_dispatcher')}}</Button>
             <Input search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
             <Select clearable v-model="searchUserType" style="width:180px;float:left;margin-left:20px;" :placeholder="searchByUserType"  @on-change="searchBox(1)">
                 <Option value="1" key="1">{{ $t('employee_type_List1') }}</Option>
@@ -277,6 +277,7 @@
                 <Button type="primary" size="large" @click="sendBatchImport">
                     {{$t('ok')}}
                 </Button>
+                
             </div>
         </Modal>
         <!-- 导入结果 -->
@@ -295,11 +296,14 @@
                 </TabPane>
             </Tabs>
             <div slot="footer">
-                <Button  type="default" size="large" @click="modal12=false">
+                <Button v-if="n!='close'" type="default" size="large" @click="modal12=false">
                     {{$t('cancel')}}
                 </Button>
-                <Button  v-if="tabName=='name1'" type="primary" size="large" @click="batchSaveEdposUser">
+                <Button  v-if="tabName=='name1'&&n!='close'" type="primary" size="large" @click="batchSaveEdposUser">
                     {{$t('user_table_btn_batchImport')}}
+                </Button>
+                <Button v-if="n=='close'" type="default" size="large" @click="modal12=false">
+                    {{$t('close')}}
                 </Button>
             </div>
         </Modal>
@@ -397,6 +401,7 @@ data () {
         }
     };
     return {
+      n:'',
       allUser:[],
       searchUserType:'',
       accessList:{
@@ -1194,6 +1199,7 @@ methods: {
         .then(function(res){
             // console.log(res)
             if(res.data.code==0){
+                _this.n=''
                 _this.modal11 = false
                 _this.modal12 = true
                 _this.turnDate(res.data.data.errorUsers)
@@ -1219,8 +1225,15 @@ methods: {
         batchSaveUserBasic(this.importSuccessData)
         .then(function(res){
             if(res.data.code==0){
-                _this.$Message.success(_this.$t('user_table_import_success_list'))
-                _this.modal12=false
+                _this.n='close'
+                _this.modal11 = false
+                _this.modal12 = true
+                _this.turnDate(res.data.data.errorUsers)
+                _this.turnDate(res.data.data.successUsers)
+                _this.errorCount = res.data.data.errorUsers.length
+                _this.importFailureData = res.data.data.errorUsers
+                _this.successCount = res.data.data.successUsers.length
+                _this.importSuccessData = res.data.data.successUsers
                 _this._getMes()
             }
         })
