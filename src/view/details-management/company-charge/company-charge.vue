@@ -5,7 +5,7 @@
                 <div class="search_item">
                     <div class="search_label">{{$t('company')}}</div>
                     <div class="search_input agentTree">
-                        <Input  v-model='searchMes.companyName' clearable :placeholder="register_firm_name_placeholder" @on-change="clearSearchAgent" style="width:250px"/>
+                        <Input  v-model='searchMes.companyName' clearable :maxlength='60' :placeholder="register_firm_name_placeholder" @on-change="clearSearchAgent" style="width:250px"/>
                     </div>
                 </div>
                 <div class="search_item">
@@ -50,11 +50,7 @@
           <p slot="header">
               <span>{{$t('remark')}}</span>
           </p>
-          <div class='p'><span>{{$t('describe')}}：</span>{{remarkDesc}}</div>
-          <div class='p'>
-             <span>{{$t('remark')}}：</span>
-              <Input v-model="remarkContent" :maxlength="1000" type="textarea" :rows="4" :placeholder="enterRemark" />
-          </div>
+          <Input v-model="remarkContent" :maxlength="100" type="textarea" :rows="4" :placeholder="enterRemark" />
           <div slot="footer">
               <Button type="default" size="large" @click="modal1=false">{{$t('cancel')}}</Button>
               <Button type="primary" size="large" @click="sendRemark">{{$t('ok')}}</Button>
@@ -323,7 +319,7 @@ export default {
                 }
                 data[i].createTime = dateFormat(new Date(data[i].createTime),'yyyy-MM-dd hh:mm:ss')
                 
-                // busiType : 1=代理商充企业  2=代理商充代理商   3=客服充代理商
+                // busiType : 1=代理商充企业  2=代理商充代理商   3=客服充代理商    4=客服充企业
                 // busiState : 1=充入  2=充出 
                 // dealname=处理人名字   myName=所查企业名字    objName=充入火充出对象名字
 
@@ -361,6 +357,13 @@ export default {
                         data[i].objName = this.$t('customer_service')
                     }
                     
+                }else if(data[i].busiType==4){//客服充企业
+                    if(data[i].busiState==2){//充出
+                        data[i].dealName = data[i].ccsUname
+                        data[i].myName = this.$t('customer_service')
+                        data[i].objName = data[i].companyName+"【"+data[i].uname+"】" 
+                        
+                    }
                 }
                 switch(data[i].busiState){
                     case 1:

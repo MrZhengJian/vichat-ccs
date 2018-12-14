@@ -12,11 +12,11 @@
             <div style="overflow:hidden">
                 <div class="searchBox">
                     <span>{{$t('SN')}}：</span> 
-                    <Input v-model="searchMes.sn" clearable  type="text"  style="width:200px"/>
+                    <Input v-model="searchMes.sn" clearable :maxlength='20' type="text"  style="width:200px"/>
                 </div>
                 <div class="searchBox">
                     <span>{{$t('alarmType')}}：</span>
-                    <Input v-model="searchMes.snType" clearable type="text"  style="width:200px"/>
+                    <Input v-model="searchMes.snType" clearable type="text" :maxlength='20' style="width:200px"/>
                 </div>
                 <div class="searchBox">
                     <span>{{$t('state')}}：</span>

@@ -5,13 +5,13 @@
                 <div class="search_item">
                     <div class="search_label">{{$t('name')}}</div>
                     <div class="search_input">
-                        <Input v-model="searchMes.companyName" clearable :placeholder="agent_name_placeholder" />
+                        <Input v-model="searchMes.companyName" :maxlength='60' clearable :placeholder="agent_name_placeholder" />
                     </div>
                 </div>
                 <div class="search_item">
                     <div class="search_label">{{$t('user_table_modal1_account_label')}}</div>
                     <div class="search_input">
-                        <Input v-model="searchMes.account" clearable :placeholder="agent_acount_placeholder" />
+                        <Input v-model="searchMes.account" :maxlength='20' clearable :placeholder="agent_acount_placeholder" />
                     </div>
                 </div>
                 <div class="search_item">
@@ -92,10 +92,10 @@
         <Modal :title="Recharge" v-model="modal3">
             <Form :model="renew_form" ref="renew" :rules="renewRule"  :label-width="120">
                 <FormItem  :label="RechargeByMonth"  style="margin:12px;">
-                    <InputNumber :min="1" v-model="renew_form.monthNumber" style="width: 300px"></InputNumber> 
+                    <InputNumber :min="1" v-model="renew_form.monthNumber" :max="120" style="width: 300px"></InputNumber> 
                 </FormItem>
                 <FormItem  :label="remark"  style="margin:12px;">
-                    <Input v-model="renew_form.record" type="textarea" :rows="3"  style="width: 300px"/> 
+                    <Input v-model="renew_form.record" type="textarea" :rows="3" :maxlength='100' style="width: 300px"/> 
                 </FormItem>
             </Form>
              <div slot="footer">
@@ -197,21 +197,9 @@ export default {
         return {
             moreSearch:this.$t('moreSearch'),
             columns:[
+                
                 {
-                  title: this.$t('user_table_modal1_account_label'),
-                  key: 'account',
-                  ellipsis: true,
-                  render: (h, params) => {
-                    return h('Tooltip', {
-                      props: { placement: 'top-start' }
-                    }, [
-                      params.row.account,
-                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.account)
-                    ])
-                  }
-                },
-                {
-                  title: this.$t('name'),
+                  title: this.$t('agent'),
                   key: 'companyName',
                   ellipsis: true,
                   render: (h, params) => {
@@ -250,6 +238,19 @@ export default {
                   }
                 },
                 {
+                  title: this.$t('user_table_modal1_account_label'),
+                  key: 'account',
+                  ellipsis: true,
+                  render: (h, params) => {
+                    return h('Tooltip', {
+                      props: { placement: 'top-start' }
+                    }, [
+                      params.row.account,
+                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.account)
+                    ])
+                  }
+                },
+                {
                   title: this.$t('balance'),
                   key: 'authMonth',
                   ellipsis: true,
@@ -278,11 +279,11 @@ export default {
                                         }
                                     },
                                     style:{
-                                        // display:this.accessList.child_agent_recharge?'inline-block':'none',
                                         cursor:'pointer',
-                                        color:'#2DB7F5'
+                                        color:params.row.leafLevel==1?'#2DB7F5':'#ddd'
                                     },
                                     props: {
+                                        disabled:params.row.leafLevel==1?false:true,
                                         type: 'text',
                                         size: 'small'
                                     } 
@@ -363,7 +364,7 @@ export default {
                     {required: true,validator: validateAccount, trigger: 'blur'}
                 ],
                 adminName:[
-                    {validator: validateUserName1, trigger: 'blur'}
+                    {required: true,validator: validateUserName, trigger: 'blur'}
                 ],
                 
             },

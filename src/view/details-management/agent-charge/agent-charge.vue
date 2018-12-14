@@ -5,7 +5,7 @@
                 <div class="search_item">
                     <div class="search_label">{{$t('agent')}}</div>
                     <div class="search_input agentTree">
-                        <Input @on-focus="showTree=true" v-model='searchMes.agentName' clearable :placeholder="agent_name_placeholder" @on-change="clearSearchAgent" style="width:250px"/>
+                        <Input @on-focus="showTree=true" :maxlength='60'  v-model='searchMes.agentName' clearable :placeholder="agent_name_placeholder" @on-change="clearSearchAgent" style="width:250px"/>
                         <Tree v-if="showTree" @on-select-change="clickTreeNode" :data="treeDate" :load-data="getChildAgent" style="width:250px"></Tree>
                     </div>
                 </div>
@@ -51,11 +51,7 @@
           <p slot="header">
               <span>{{$t('remark')}}</span>
           </p>
-          <div class='p'><span>{{$t('describe')}}：</span>{{remarkDesc}}</div>
-          <div class='p'>
-             <span>{{$t('remark')}}：</span>
-              <Input v-model="remarkContent" :maxlength="1000" type="textarea" :rows="4" :placeholder="enterRemark" />
-          </div>
+          <Input v-model="remarkContent" :maxlength="100" type="textarea" :rows="4" :placeholder="enterRemark" />
           <div slot="footer">
               <Button type="default" size="large" @click="modal1=false">{{$t('cancel')}}</Button>
               <Button type="primary" size="large" @click="sendRemark">{{$t('ok')}}</Button>

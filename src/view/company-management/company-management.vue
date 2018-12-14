@@ -4,11 +4,11 @@
             <div style="overflow:hidden">
             	<div class="searchBox">
             		<span>{{$t('name')}}：</span> 
-            		<Input v-model="searchMes.name" clearable  type="text" :placeholder="register_firm_name_placeholder" style="width:200px"/>
+            		<Input v-model="searchMes.name" clearable :maxlength='60'  type="text" :placeholder="register_firm_name_placeholder" style="width:200px"/>
             	</div>
             	<div class="searchBox">
             		<span>{{$t('user_table_modal1_account_label')}}：</span>
-            		<Input v-model="searchMes.terminal" clearable type="text" :placeholder="user_table_modal1_account_placeholder" style="width:200px"/>
+            		<Input v-model="searchMes.terminal" clearable :maxlength='20' type="text" :placeholder="user_table_modal1_account_placeholder" style="width:200px"/>
             	</div>
                 <div class="searchBox">
                     <Button type="primary" @click="search">&nbsp;&nbsp;{{$t('search')}}&nbsp;&nbsp;</Button>
@@ -54,9 +54,9 @@
                 <FormItem :label="confirm_password" prop="repassword">
                     <Input type="password" v-model='form.repassword' :maxlength='16' :minlength='6' :placeholder="register_repeat_pwd_placeholder" style="width:300px;"></Input>
                 </FormItem>
-                <FormItem :label="user_name" prop="companyName">
+                <!-- <FormItem :label="user_name" prop="companyName">
                     <Input type="text" v-model='form.userName' :maxlength='20' :placeholder="login_user_placeholder" style="width:300px;"></Input>
-                </FormItem>
+                </FormItem> -->
                 <FormItem :label="free_type" >
                     <Select v-model="form.freeType" style="width:300px">
                         <Option :value="0" :key="0">{{ $t('free_by_number') }}</Option>
@@ -468,6 +468,10 @@ export default {
                     case 0:
                        item.freeType = _this.$t('free_by_number')
                        break;
+                       
+                }
+                if(!item.agentCompanyName){
+                    item.agentCompanyName = "CCS"
                 }
             })
             this.tableData=data
