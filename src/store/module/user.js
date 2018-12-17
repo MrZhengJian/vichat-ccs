@@ -1,4 +1,4 @@
-import { login, logout, getSession,platForm } from '@/api/user'
+import { login, logout, getSession, platForm } from '@/api/user'
 import { setToken, getToken } from '@/libs/util'
 import { loadSysStaticData } from '@/api/user-manage'
 
@@ -9,10 +9,10 @@ export default {
     avatorImgPath: '',
     token: getToken(),
     access: '',
-    userObj:{},
-    funcObj:{},
-    sysStaticData:{},
-    record:null
+    userObj: {},
+    funcObj: {},
+    sysStaticData: {},
+    record: null
   },
   mutations: {
     setAvator (state, avatorPath) {
@@ -31,29 +31,29 @@ export default {
       state.token = token
       setToken(token)
     },
-    setUserObj(state,obj){
+    setUserObj (state, obj) {
       state.userObj = obj
     },
-    setFuncObj(state,arr){
-      let obj={}
-      for(let i=0;i<arr.length;i++){
+    setFuncObj (state, arr) {
+      let obj = {}
+      for (let i = 0; i < arr.length; i++) {
         obj[arr[i]] = true
       }
       state.funcObj = obj
     },
-    setCompanyObj(state,obj){
+    setCompanyObj (state, obj) {
       state.CompanyObj = obj
     },
-    setRecord(state,obj){
+    setRecord (state, obj) {
       state.record = obj
     },
-    setSysStaticData(state,obj){
+    setSysStaticData (state, obj) {
       state.sysStaticData = obj
     }
   },
   actions: {
     // 登录
-    handleLogin ({ commit }, {userName, password ,code}) {
+    handleLogin ({ commit }, {userName, password, code}) {
       userName = userName.trim()
       return new Promise((resolve, reject) => {
         login({
@@ -61,14 +61,13 @@ export default {
           password,
           code
         }).then(res => {
-          if(res){
+          if (res) {
             const data = res.data
-            if(data.code==0){
+            if (data.code == 0) {
               commit('setToken', data.data.ccs_token)
             }
             resolve(data)
           }
-          
         }).catch(err => {
           reject(err)
         })
@@ -95,24 +94,24 @@ export default {
       return new Promise((resolve, reject) => {
         getSession(state.token).then(res => {
           const data = res.data
-          localStorage.setItem('account_uname',data.data.user.userName)
-          localStorage.setItem('account_uid',data.data.user.agentUid)
+          localStorage.setItem('account_uname', data.data.user.userName)
+          localStorage.setItem('account_uid', data.data.user.agentUid)
           commit('setUserObj', data.data.user)
           // commit('setCompanyObj', data.data.company)
 
-          // commit('setFuncObj', data.data.functions)
+          commit('setFuncObj', data.data.functions)
 
           // commit('setRecord', data.obj.record)
           resolve(data)
         }).catch(err => {
           reject(err)
         })
-        platForm().then(res=>{
-          for(let key in res.data.data){
-            localStorage.setItem(key,res.data.data[key])
+        platForm().then(res => {
+          for (let key in res.data.data) {
+            localStorage.setItem(key, res.data.data[key])
           }
         })
       })
-    },
+    }
   }
 }

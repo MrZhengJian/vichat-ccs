@@ -87,9 +87,9 @@ export const deleteAgentCompany = (params) => {
   })
 }
 // AGENT USERS
-export const queryAgentUser = (params) => {
+export const queryCcsUser = (params) => {
   return axios.request({
-    url: '/ccs/api/queryAgentUser',
+    url: '/ccs/api/queryCcsUser',
     method: 'get',
     params
   })
@@ -111,17 +111,25 @@ export const batchSaveAgentUsers = (params) => {
   })
 }
 
-export const chgAgentPassword = (params) => {
+export const chgCcsPassword = (params) => {
   return axios.request({
-    url: '/ccs/api/chgAgentPassword',
+    url: '/ccs/api/chgCcsPassword',
     method: 'get',
     params
   })
 }
 
-export const saveAgentUser = (params) => {
+export const saveCcsUser = (params) => {
   return axios.request({
-    url: '/ccs/api/saveAgentUser',
+    url: '/ccs/api/saveCcsUser',
+    method: 'get',
+    params
+  })
+}
+
+export const deleteCcsUser = (params) => {
+  return axios.request({
+    url: '/ccs/api/deleteCcsUser',
     method: 'get',
     params
   })

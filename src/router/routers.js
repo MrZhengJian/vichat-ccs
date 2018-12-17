@@ -44,6 +44,37 @@ export default [
     ]
   },
   {
+    path: '/account_management',
+    name: 'account_management',
+    component: Main,
+    meta: {
+      icon: 'md-people',
+      title: i18n.t('account_management'),
+    },
+    children: [ 
+        {
+            path: '/my_account', 
+            name: 'my_account', 
+            meta: {
+              hideInMenu: false,
+              icon: 'md-person',
+              title: i18n.t('my_account'),
+            },   
+            component: () => import('@/view/myAccount-management/myAccount-management.vue')
+        },
+        {
+            path: '/role', 
+            name: 'role', 
+            meta: {
+              hideInMenu: false,
+              icon: 'md-key',
+              title: i18n.t('role'),
+            },   
+            component: () => import('@/view/role-management/role.vue')
+        }
+    ]
+  },
+  {
     path: '_agent_management',
     name: '_agent_management',
     component: Main,
@@ -69,7 +100,7 @@ export default [
     name: 'management',
     component: Main,
     meta: {
-      title: i18n.t('company'),
+      title: i18n.t('company_management'),
     },
     children: [ 
         {
@@ -78,7 +109,7 @@ export default [
             meta: {
               hideInMenu: false,
               icon: 'md-home',
-              title: i18n.t('company'),
+              title: i18n.t('company_management'),
             },   
             component: () => import('@/view/company-management/company-management.vue')
         },
