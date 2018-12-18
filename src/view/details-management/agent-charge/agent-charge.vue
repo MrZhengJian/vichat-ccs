@@ -5,7 +5,7 @@
                 <div class="search_item">
                     <div class="search_label">{{$t('agent')}}</div>
                     <div class="search_input agentTree">
-                        <Input @on-focus="showTree=true" :maxlength='60'  v-model='searchMes.agentName' clearable :placeholder="agent_name_placeholder" @on-change="clearSearchAgent" style="width:250px"/>
+                        <Input @on-focus="showTree=true" :maxlength='60' readonly v-model='searchMes.agentName' clearable :placeholder="agent_name_placeholder" @on-change="clearSearchAgent" style="width:250px"/>
                         <Tree v-if="showTree" @on-select-change="clickTreeNode" :data="treeDate" :load-data="getChildAgent" style="width:250px"></Tree>
                     </div>
                 </div>
@@ -283,7 +283,8 @@ export default {
             treeDate:[],
             agentTreeSearchText:'',
             showTreeSpin:false,
-            showTree:false
+            showTree:false,
+            tempTreeNode:[]
         }
     },
    
@@ -458,13 +459,20 @@ export default {
             this.queryAgentList(param)
         },
         clickTreeNode(param){
+            if(param.length==0){
+              param = this.tempTreeNode
+            }else{
+              this.tempTreeNode = param
+            }
+            // console.log(this.tempTreeNode)
+            // console.log(param)
             this.showTree=false
             this.searchMes.agentId=param[0].id
             this.searchMes.agentName=param[0].title
         },
         clearSearchAgent(){
           if(this.searchMes.agentName==''){
-            this.searchMes.id=''
+            this.searchMes.agentId=''
             this.showTree = false
           }
         }

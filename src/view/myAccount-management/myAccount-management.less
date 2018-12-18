@@ -5,35 +5,75 @@
 		font-size:30px;
 		padding-top:7px;
 	}
+	.search{
+		.ivu-card-body{
+			padding:0 16px;
+			&>div{
+				overflow: hidden;
+				.search_item{
+					float: left;
+					display:flex;
+					margin:15px 20px 15px 0;
+					.search_label{
+						font-size: 14px;
+						line-height: 32px;
+						padding:0 10px;
+					};
+					.search_input{
+						.ivu-input-wrapper{
+							width:250px;
+						}
+					}
+
+				}
+				.moreSearch{
+					margin:15px 0;
+					height: 32px;
+					line-height: 32px;
+					float: right;
+					a{
+						display: inline-block;
+					}
+					
+				}
+			}
+		}
+	}
 	.main{
 		position: absolute;
 		top: 0px;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		.btns{
-			margin-bottom: 5px;
-		    position: absolute;
-		    top:0;
-		    left:0;
-		    width: 100%;
-		    height:40px;
-		    z-index:100;
-		    overflow: hidden;
-		    .ivu-btn{
-		    	float: right;
-		    	margin-left: 5px;
-		    	height: 32px;
-		    }
-		}
-		.table{
+		
+		.content{
 			position: absolute;
 		    bottom:50px;
-		    left:0;
-		    top:50px;
-		    overflow-y: auto;
-		    z-index:99;
-		    width: 100%;
+			left:0;
+			right: 0;
+		    top:75px;
+			width: 100%;
+			.btns{
+				position: absolute;
+				top:0;
+				left:0;
+				width: 100%;
+				z-index:100;
+				overflow: hidden;
+				.ivu-btn{
+					float: right;
+					margin-left: 5px;
+					height: 32px;
+				}
+			}
+			.table{
+				position: absolute;
+				bottom:0px;
+				left:0;
+				right: 0;
+				top:45px;
+				overflow-y: auto;
+			}
 		}
 		.page{
 			position: absolute;

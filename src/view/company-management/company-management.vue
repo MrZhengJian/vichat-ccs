@@ -17,7 +17,7 @@
         </Card>
         <div class="content">
             <div class="btns">
-                <Button type="primary"  @click="addCompany">&nbsp;&nbsp;{{$t('user_table_btn_add')}}&nbsp;&nbsp;</Button>
+                <Button type="primary" v-if="accessList.company_add" @click="addCompany">&nbsp;&nbsp;{{$t('user_table_btn_add')}}&nbsp;&nbsp;</Button>
             </div>
             <div class="tableBox">
                 <Table @on-selection-change="tableSelection" ref="selection" :columns="tableColums" :data="tableData"></Table>
@@ -304,7 +304,7 @@ export default {
                                         }
                                     },
                                     style:{
-                                        // display:this.accessList.company_edit?'inline-block':'none',
+                                        display:this.accessList.company_edit?'inline-block':'none',
                                         color:'#2DB7F5',
                                         cursor:'pointer'
                                     },
@@ -321,7 +321,7 @@ export default {
                                         }
                                     },
                                     style:{
-                                        // display:this.accessList.company_account?'inline-block':'none',
+                                        display:this.accessList.company_account?'inline-block':'none',
                                         color:'#2DB7F5',
                                         cursor:'pointer'
                                     },
@@ -338,7 +338,7 @@ export default {
                                         }
                                     },
                                     style:{
-                                        // display:this.accessList.company_org?'inline-block':'none',
+                                        display:this.accessList.company_org?'inline-block':'none',
                                         color:'#2DB7F5',
                                         cursor:'pointer'
                                     },
@@ -355,7 +355,7 @@ export default {
                                         }
                                     },
                                     style:{
-                                        // display:this.accessList.company_room?'inline-block':'none',
+                                        display:this.accessList.company_room?'inline-block':'none',
                                         color:'#2DB7F5',
                                         cursor:'pointer'
                                     },
@@ -373,7 +373,7 @@ export default {
                                     }
                                   },
                                   style: {
-                                    // display: this.accessList.company_del ? 'inline-block' : 'none',
+                                    display: this.accessList.company_del ? 'inline-block' : 'none',
                                     color: '#F25E43',
                                     cursor: 'pointer'
                                   },

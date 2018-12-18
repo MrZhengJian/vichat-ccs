@@ -9,8 +9,8 @@
 <template>
 	<div class="table">
 		<div ref="btnGroup" class="btn-group">
-        <Dropdown style="float:right" trigger="click" @on-click="exportData">
-            <Button type="primary">
+        <Dropdown v-if="accessList.company_account_export" style="float:right" trigger="click" @on-click="exportData">
+            <Button type="primary" style="width:82px">
                 {{$t('user_table_btn_export')}}
                 <Icon type="ios-arrow-down"></Icon>
             </Button>
@@ -21,41 +21,41 @@
             </DropdownMenu>
         </Dropdown>
         <p v-if="!btnCollapse"  style="float:right;display:flex;margin-right:5px;">
-          <Button type="primary" v-if="mycanRenew!='false'" @click="batchImportModal">{{$t('user_table_btn_batchImport')}}</Button>
-          <Button type="primary"  @click="btnClick(5)">{{$t('user_table_btn_org')}}</Button>
-          <Button type="primary" v-if="mycanRenew!='false'" @click="btnClick(9)">{{$t('renew')}}</Button>
-          <Button type="primary" v-if="mycanRenew!='false'" @click="openAddUser('3')">{{$t('add_terminal')}}</Button>
-          <Button type="primary" v-if="mycanRenew!='false'" @click="openAddUser('4')">{{$t('add_dispatcher')}}</Button>
+          <Button type="primary" v-if="mycanRenew!='false'&&accessList.company_account_add" @click="openAddUser('4')">{{$t('add_dispatcher')}}</Button>
+          <Button type="primary" v-if="mycanRenew!='false'&&accessList.company_account_add" @click="openAddUser('3')">{{$t('add_terminal')}}</Button>
+          <Button type="primary" v-if="mycanRenew!='false'&&accessList.company_account_recharge" @click="btnClick(9)">{{$t('renew')}}</Button>
+          <Button type="primary" v-if="accessList.company_account_org" @click="btnClick(5)">{{$t('user_table_btn_org')}}</Button>
+          <Button type="primary" v-if="mycanRenew!='false'&&accessList.company_account_import" @click="batchImportModal">{{$t('user_table_btn_batchImport')}}</Button>
         </p>
         <p v-if="btnCollapse" style="float:right;display:flex;margin-right:5px;">
-          <Tooltip :content="$t('add_dispatcher')">
-            <Button type="primary" v-if="mycanRenew!='false'" @click="openAddUser('4')">
+          <Tooltip :content="$t('add_dispatcher')" v-if="mycanRenew!='false'&&accessList.company_account_add">
+            <Button type="primary" @click="openAddUser('4')">
               <Icon type="ios-person-add" />
             </Button>
           </Tooltip>
-          <Tooltip :content="$t('add_terminal')">
-            <Button type="primary" v-if="mycanRenew!='false'" @click="openAddUser('3')">
+          <Tooltip :content="$t('add_terminal')" v-if="mycanRenew!='false'&&accessList.company_account_add">
+            <Button type="primary" @click="openAddUser('3')">
               <Icon type="ios-person-add-outline" />
             </Button>
           </Tooltip>
-          <Tooltip :content="$t('renew')">
-            <Button type="primary" v-if="mycanRenew!='false'" @click="btnClick(9)">
+          <Tooltip :content="$t('renew')" v-if="mycanRenew!='false'&&accessList.company_account_recharge">
+            <Button type="primary"  @click="btnClick(9)">
               <Icon type="md-paper" />
             </Button>
           </Tooltip>
-          <Tooltip :content="$t('user_table_btn_org')">
+          <Tooltip :content="$t('user_table_btn_org')"  v-if="accessList.company_account_org">
             <Button type="primary"  @click="btnClick(5)">
               <Icon type="md-contacts" />
             </Button>
           </Tooltip>
-          <Tooltip :content="$t('user_table_btn_batchImport')">
-            <Button type="primary" v-if="mycanRenew!='false'" @click="batchImportModal">
+          <Tooltip :content="$t('user_table_btn_batchImport')" v-if="mycanRenew!='false'&&accessList.company_account_import">
+            <Button type="primary"  @click="batchImportModal">
               <Icon type="ios-download-outline" />
             </Button>
           </Tooltip>
         </p>
 
-        <Input search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
+        <Input clearable search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
         <Select clearable v-model="searchUserType" style="width:180px;float:left;margin-left:20px;" :placeholder="searchByUserType"  @on-change="searchBox(1)">
             <Option value="1" key="1">{{ $t('employee_type_List1') }}</Option>
             <Option value="2" key="2">{{ $t('employee_type_List2') }}</Option>
@@ -375,7 +375,7 @@ export default {
     this._getMes()
   },
   mounted:function(){
-    this.btnCollapse = this.$refs.btnGroup.offsetWidth<=900?true:false
+    this.btnCollapse = document.body.clientWidth<=1500?true:false
   },
 
 data () {
@@ -613,7 +613,7 @@ data () {
                         }
                       },
                       style: {
-                        // display: this.accessList.company_account_edit?'inline-block':'none',
+                        display: this.accessList.company_account_edit?'inline-block':'none',
                         color: '#2DB7F5',
                         cursor: 'pointer'
                       },
@@ -630,7 +630,7 @@ data () {
                         }
                       },
                       style: {
-                        // display: this.accessList.company_account_pwd?'inline-block':'none',
+                        display: this.accessList.company_account_pwd?'inline-block':'none',
                         cursor: 'pointer',
                         color: '#2DB7F5'
                       },
@@ -661,7 +661,7 @@ data () {
                         }
                       },
                       style: {
-                        display: this.mycanRenew!='false'?'inline-block':'none',
+                        display: this.mycanRenew!='false'&&this.accessList.company_account_recharge?'inline-block':'none',
                         cursor: 'pointer',
                         // color: (this.personData[params.index].userType!='1'?'#ccc':'#2DB7F5')
                         color: '#2DB7F5'

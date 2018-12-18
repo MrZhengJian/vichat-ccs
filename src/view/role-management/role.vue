@@ -8,17 +8,35 @@
 
 <template>
   <div class="role">
-    <div class="btns">
-      <Button style="float:right" v-if="accessList.role_add" type="primary" @click="modal1 = true">{{$t('add_role')}}</Button>
+    <Card class="search">
+      <div>
+          <div class="search_item">
+              <div class="search_label">{{$t('name')}}</div>
+              <div class="search_input">
+                  <Input clearable v-model="searchText" :placeholder="role_name_placeholder" style="width: 300px;float:left"></Input>
+              </div>
+          </div>
+
+          <div class="search_item">
+              <Button type='primary' @click="_searchText">{{$t('search')}}</Button>
+          </div>
+      </div>
+
+    </Card>
+    
+    <div class="content">
+      <div class="btns">
+        <Button style="float:right" v-if="accessList.role_add" type="primary" @click="modal1 = true">{{$t('add_role')}}</Button>
+      </div>
+      <div class="table">
+        <Table stripe :columns="columns" :data="tableData" ></Table>
+      </div>
       
-      <Input search enter-button @on-search="_searchText" v-model="searchText" :placeholder="search_role_placeholder" style="width: 300px;float:left"></Input>
-    </div>
-    <div class="table">
-      <Table stripe :columns="columns" :data="tableData" ></Table>
     </div>
     <div class="page">
         <div style="float: right;">
             <Page 
+                ref='page'
                 @on-change="changePage" 
                 @on-page-size-change="changePageSize"
                 :total=pages.total 
@@ -279,8 +297,8 @@ export default {
       let _this = this
       let param = {
           page:this.pages.page,
-          limit:this.pages.rows
-
+          limit:this.pages.rows,
+          roleName:this.searchText
       }
       queryPrisonSecRole(param)
       .then(res=>{
@@ -325,10 +343,10 @@ export default {
           _this.menuList.push(element.id+'')
 
       });
-      if(_this.menuList.indexOf('9')>-1||_this.menuList.indexOf('10')>-1){
-          _this.menuList.push('1')
+      if(_this.menuList.indexOf('10')>-1||_this.menuList.indexOf('11')>-1){
+          _this.menuList.push('37')
       }
-      if(_this.menuList.indexOf('17')){
+      if(_this.menuList.indexOf('18')>-1){
           _this.menuList.push('2')
       }
     },
@@ -350,19 +368,9 @@ export default {
     },
 
     _searchText(){
-      if(this.searchText==''){
-        this.tableData = this.saveTableData
-        return 
-      }
-      let temp=[]
-      for(let i=0,arr=this.saveTableData;i<arr.length;i++){
-        if( arr[i].roleName.indexOf(this.searchText)>=0 || 
-          arr[i].roleDesc.indexOf(this.searchText)>=0)
-        {
-          temp.push(this.saveTableData[i])
-        }
-      }
-      this.tableData = temp
+      this.$refs.page.currentPage=1
+      this.pages.page = 1
+      this.getRoleList()
     },
     _addRole(n){
       let _this = this

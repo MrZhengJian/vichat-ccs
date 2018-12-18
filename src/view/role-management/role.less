@@ -1,20 +1,63 @@
 .role{
 	height: 100%;
 	position: relative;
-	.btns{
-		position: absolute;
-		top: 0px;
-		left: 0;
-		right: 0;
+	.search{
+		.ivu-card-body{
+			padding:0 16px;
+			&>div{
+				overflow: hidden;
+				.search_item{
+					float: left;
+					display:flex;
+					margin:15px 20px 15px 0;
+					.search_label{
+						font-size: 14px;
+						line-height: 32px;
+						padding:0 10px;
+					};
+					.search_input{
+						.ivu-input-wrapper{
+							width:250px;
+						}
+					}
+
+				}
+				.moreSearch{
+					margin:15px 0;
+					height: 32px;
+					line-height: 32px;
+					float: right;
+					a{
+						display: inline-block;
+					}
+					
+				}
+			}
+		}
 	}
-	.table{
+	
+	.content{
+
 		position: absolute;
-		top: 50px;
+		top: 75px;
 		left: 0;
 		right: 0;
 		bottom: 52px;
-		overflow: auto;
-		border:1px solid #ddd;
+		.btns{
+			position: absolute;
+			top: 0px;
+			left: 0;
+			right: 0;
+		}
+		.table{
+			position: absolute;
+			top: 45px;
+			left: 0;
+			right: 0;
+			bottom: 52px;
+			overflow: auto;
+			border:1px solid #ddd;
+		}
 	}
 	.page{
 		position: absolute;

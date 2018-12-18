@@ -22,7 +22,7 @@
         </Card>
     	<div class="content" ref='content'>
             <div class="btns">
-                <Button type='primary' @click="addAgent">{{$t('addagent')}}</Button>
+                <Button type='primary' v-if="accessList.agent_add" @click="addAgent">{{$t('addagent')}}</Button>
             </div>
             <div class="table">
                 <Table :columns="columns" :data="tableData"></Table>
@@ -195,6 +195,12 @@ export default {
             }
         };
         return {
+            accessList: {
+                'agent_edit': this.$store.state.user.funcObj.agent_edit || false,
+                'agent_recharge': this.$store.state.user.funcObj.agent_recharge || false,
+                'agent_add': this.$store.state.user.funcObj.agent_add || false,
+                'agent_del': this.$store.state.user.funcObj.agent_del || false
+            },
             moreSearch:this.$t('moreSearch'),
             columns:[
                 
@@ -279,6 +285,7 @@ export default {
                                         }
                                     },
                                     style:{
+                                        display:this.accessList.agent_recharge?'inline-block':'none',
                                         cursor:'pointer',
                                         color:params.row.leafLevel==1?'#2DB7F5':'#ddd'
                                     },
@@ -296,7 +303,7 @@ export default {
                                         }
                                     },
                                     style:{
-                                        // display:this.accessList.child_agent_edit?'inline-block':'none',
+                                        display:this.accessList.agent_edit?'inline-block':'none',
                                         cursor:'pointer',
                                         color:'#2DB7F5'
                                     },
@@ -315,7 +322,7 @@ export default {
                                     }
                                   },
                                   style: {
-                                    // display: this.accessList.child_agent_del ? 'inline-block' : 'none',
+                                    display:this.accessList.agent_del?'inline-block':'none',
                                     color: '#F25E43',
                                     cursor: 'pointer'
                                   },

@@ -73,7 +73,7 @@ export default {
                 }
                 
                 this.searchParams[arr[0]] = arr[1]
-                if(arr[0]=='orgId'||arr[0]=='userName')  this.searchParams.page = 1
+                if(arr[0]=='orgId'||arr[0]=='userName'||arr[0]=='userType')  this.searchParams.page = 1
             }
             this.searchParams.partyId = this.partyId
             queryEdposUsers(this.searchParams)

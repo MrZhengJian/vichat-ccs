@@ -1,13 +1,30 @@
 <template>
     <div class="my_account">
         <div class="main">
-            <div class="btns">
-                <Input search enter-button @on-keyup="searchBox(1)" @on-search="searchBox" :placeholder="searchByNameOrAccount" v-model="searchTxt"  style="width: 250px;float:left"></Input>
-                <!-- <Button type="primary" v-if="accessList.account_import" @click="batchImportModal">{{$t('user_table_btn_batchImport')}}</Button> -->
-                <Button type="primary" v-if="accessList.account_add" @click="openAddUser">{{$t('user_table_btn_add')}}</Button>
-            </div>
-            <div class="table">
-                <Table ref="table" stripe :columns="columns" :data="tableData"></Table>
+            <Card class="search">
+              <div>
+                  <div class="search_item">
+                      <div class="search_label">{{$t('name')}} / {{$t('user_table_modal1_account_label')}}</div>
+                      <div class="search_input">
+                          <Input clearable :placeholder="searchByNameOrAccount" v-model="searchTxt"  style="width: 250px;float:left"></Input>
+                      </div>
+                  </div>
+
+                  <div class="search_item">
+                      <Button type='primary' @click="searchBox">{{$t('search')}}</Button>
+                  </div>
+              </div>
+
+            </Card>
+            
+            <div class="content">
+                <div class="btns">
+                  <Button type="primary" v-if="accessList.account_add" @click="openAddUser">{{$t('user_table_btn_add')}}</Button>
+                </div>
+                <div class="table">
+                  <Table ref="table" stripe :columns="columns" :data="tableData"></Table>
+                </div> 
+                
             </div>
             <div class="page">
                 <div style="float: right;">
@@ -721,15 +738,17 @@ export default {
       })
     },
     roleAssign (params) {
-      getSecRoleByUid({uid: params.row.agentUid}).then(res => {
+      let _this = this 
+      //  console.log(params)
+      getSecRoleByUid({uid: params.row.ccsUid}).then(res => {
         // console.log(res)
-        this.role_assign.uids = []
+        _this.role_assign.uids = []
         if (res.data.obj) {
-          this.role_assign.roid = res.data.obj.roid
+          _this.role_assign.roid = res.data.obj.roid
         }
 
-        this.role_assign.uids.push(params.row.agentUid)
-        this.modal8 = true
+        _this.role_assign.uids.push(params.row.ccsUid)
+        _this.modal8 = true
       })
     },
     _getRoleAssignList () {

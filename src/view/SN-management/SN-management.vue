@@ -59,7 +59,7 @@
         <Modal :title="modal11Title" v-model="modal11" :width="800">
             <div class="example1">
                 <span style="display:inline-block;text-align:right;">{{$t('agent')}}：</span>
-                <Select filterable v-model="importAgentId" style="width:300px">
+                <Select clearable  filterable v-model="importAgentId" style="width:300px">
                     <Option v-for="item in agentList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
             </div>
