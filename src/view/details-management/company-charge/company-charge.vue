@@ -295,14 +295,17 @@ export default {
             let _this = this
             let params={
                 page:this.page.current,
-                rows:this.page.size,
+                rows:this.page.size
+            }
+            let data = {
                 agentUname:this.searchMes.agentUname,
                 busiState:this.searchMes.busiState,
-                startDate:this.searchMes.date[0]?dateFormat(new Date(this.searchMes.date[0]),'yyyy-MM-dd'):'',
-                endDate:this.searchMes.date[1]?dateFormat(new Date(this.searchMes.date[1]),'yyyy-MM-dd'):'',
+                startDate:this.searchMes.date[0]?dateFormat(new Date(this.searchMes.date[0]),'yyyy-MM-dd hh:mm:ss'):'',
+                endDate:this.searchMes.date[1]?dateFormat(new Date(this.searchMes.date[1]),'yyyy-MM-dd hh:mm:ss'):'',
                 agentId:this.searchMes.agentId,
-                agentUname:this.searchMes.companyName            }
-            queryCreditRecordCompany(params)
+                agentUname:this.searchMes.companyName
+            }
+            queryCreditRecordCompany(params,data)
             .then((res)=>{
                 if(res.data.code==0){
                     _this.page.total = res.data.count
@@ -361,8 +364,11 @@ export default {
                     if(data[i].busiState==2){//充出
                         data[i].dealName = data[i].ccsUname
                         data[i].myName = this.$t('customer_service')
-                        data[i].objName = data[i].companyName+"【"+data[i].uname+"】" 
-                        
+                        data[i].objName = data[i].companyName+"【"+data[i].uname+"】"  
+                    }else{
+                        data[i].dealName = data[i].ccsUname
+                        data[i].myName = data[i].companyName+"【"+data[i].uname+"】"  
+                        data[i].objName = this.$t('customer_service')
                     }
                 }
                 switch(data[i].busiState){

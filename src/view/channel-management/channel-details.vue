@@ -7,7 +7,7 @@
     <div class="channel-details">
         <div class="title">
             <p>{{$t('companyNameLabel')}}：{{companyName}}</p>
-            <p class="channelName"><Button @click="back">{{channelName}} {{$t('home_channel')}} / {{channelCount}} {{$t('people')}}</Button></p>
+            <p class="channelName"><Button @click="back">{{$t('channel_details_back')}}</Button></p>
         </div>
         <div class="table">
             <Spin fix size="large" v-show="spin"></Spin>
@@ -182,7 +182,7 @@ export default {
     name:"channel-details",
 	data(){
 		return {
-            companyName:localStorage.getItem('companyName'),
+            companyName:localStorage.getItem('ccs_companyName'),
             spin:false,
             showSpain:false,
 			channelId:'',
@@ -412,9 +412,9 @@ export default {
 		}
 	},
 	created(){
-        this.partyId=this.$route.params.partyId || localStorage.getItem('partyId')
-		this.channelId=this.$route.params.channelId || localStorage.getItem('channelDetailsChannelId')
-        this.channelName=this.$route.params.channelName || localStorage.getItem('channelDetailsChannelName')
+        this.partyId=this.$route.params.partyId || localStorage.getItem('ccs_partyId')
+		this.channelId=this.$route.params.channelId || localStorage.getItem('ccs_channelDetailsChannelId')
+        this.channelName=this.$route.params.channelName || localStorage.getItem('ccs_channelDetailsChannelName')
         this._getMes1()
         this.getMes()
 	},

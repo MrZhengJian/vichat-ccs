@@ -7,22 +7,22 @@
     
 </style>
 <template>
-    <div class="user_manager">
+    <d class="user_manager">
         <div class="title">
             {{$t('companyNameLabel')}}：{{companyName}}
         </div>
         <Row :gutter="8" class="main">
-            <Col ref='col3' span="4">
+            <div ref='col3'  class="treeCol">
             <Spin fix size="large" v-show="spin2"></Spin>
                 <!-- 向子组件传值，:aaa="1"传递的是数字1   aaa="1"传递的是字符串1 -->
                 <org-tree v-on:search="search" @defaultOrg="defaultOrg" :partyId="partyId" origin="user"></org-tree>
-            </Col>
-            <Col span="20">
+            </div>
+            <div >
                 <Spin fix size="large" v-show="spin1"></Spin>
                 <person-table v-on:search="search" :orgMes="orgMes" :partyId="partyId" :newQuery="newQuery" :personData="personData" :total="total" :canRenew="canRenew"></person-table>
-            </Col>
+            </div>
         </Row> 
-    </div>
+    </d>
     
 </template>
 
@@ -38,8 +38,8 @@ export default {
     },
     data () {
     	return{
-            partyId:this.$route.params.partyId || localStorage.getItem('partyId'),
-            canRenew:this.$route.params.canRenew || localStorage.getItem('canRenew'),
+            partyId:this.$route.params.partyId || localStorage.getItem('ccs_partyId'),
+            canRenew:this.$route.params.canRenew || localStorage.getItem('ccs_canRenew'),
             personData:[],
             total:0,
             searchParams:{
@@ -54,7 +54,7 @@ export default {
             newQuery:false,
             spin1:false,
             spin2:false,
-            companyName:localStorage.getItem('companyName')
+            companyName:localStorage.getItem('ccs_companyName')
     	}
     },
     computed:{

@@ -4,7 +4,7 @@
 <!-- 用于 人员表 左侧组织树 和 组织表 左侧组织树-->
 <!-- 与org-tree的唯一区别是 默认展开 及 expand=true  -->
 <style rel="stylesheet" lang="less">
-    .ivu-col .myTree{
+    .myTree{
     	background: #fff;
 
         box-shadow: 1px 1px 1px 1px rgba(100, 100, 100, 0.1);

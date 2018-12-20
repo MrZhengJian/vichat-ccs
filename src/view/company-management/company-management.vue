@@ -489,9 +489,9 @@ export default {
             if(!param.row.agentId){
                 canRenew = true
             }
-            localStorage.setItem('partyId',param.row.partyId)
-            localStorage.setItem('companyName',param.row.companyName)
-            localStorage.setItem('canRenew',canRenew)
+            localStorage.setItem('ccs_partyId',param.row.partyId)
+            localStorage.setItem('ccs_companyName',param.row.companyName)
+            localStorage.setItem('ccs_canRenew',canRenew)
             this.setCompanyName(param.row.companyName)
             this.$router.push({
                 name:'user',
@@ -503,8 +503,8 @@ export default {
             });
         },
         toOrg(param){
-            localStorage.setItem('partyId',param.row.partyId)
-            localStorage.setItem('companyName',param.row.companyName)
+            localStorage.setItem('ccs_partyId',param.row.partyId)
+            localStorage.setItem('ccs_companyName',param.row.companyName)
             this.setCompanyName(param.row.companyName)
             this.$router.push({
                 name:'org',
@@ -515,10 +515,10 @@ export default {
             });
         },        
         toChannel(param){
-            localStorage.setItem('partyId',param.row.partyId)
-            localStorage.setItem('companyName',param.row.companyName)
-            localStorage.setItem('freeType',param.row.freeType)
-            localStorage.setItem('authNumber',param.row.authNumber)
+            localStorage.setItem('ccs_partyId',param.row.partyId)
+            localStorage.setItem('ccs_companyName',param.row.companyName)
+            localStorage.setItem('ccs_freeType',param.row.freeType)
+            localStorage.setItem('ccs_authNumber',param.row.authNumber)
             this.setCompanyName(param.row.companyName)
             this.$router.push({
                 name:'channel',

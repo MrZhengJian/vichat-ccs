@@ -612,6 +612,7 @@ export default {
   '0000600008': 'SN is too long',
   '0000600009': 'SN type has special characters',
   '0000600010': 'SN type is too long',
+  '00008000003': 'Account not available',
   'IE_alert': 'If the page cannot be displayed properly, use extreme speed mode or Google browser.'
 
 }

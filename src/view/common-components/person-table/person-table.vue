@@ -64,8 +64,8 @@
         </Select>
     </div>
 		<div class="table-main">
-            <Table ref="table" stripe @on-selection-change="tableSelection" :columns="columns" :data="tableData"></Table>
-        </div>
+        <Table :height="tableHeight" ref="table" stripe @on-selection-change="tableSelection" :columns="columns" :data="tableData"></Table>
+    </div>
 		<div class="page">
 	        <div style="float: right;">
 	            <Page
@@ -375,9 +375,31 @@ export default {
     this._getMes()
   },
   mounted:function(){
+    let _this = this
     this.btnCollapse = document.body.clientWidth<=1500?true:false
+    this.winHeight = document.body.clientHeight
+    window.onresize = () => {
+        return (() => {
+            window.screenHeight = document.body.clientHeight
+            _this.winHeight = window.screenHeight
+        })()
+    }
   },
-
+  watch: {
+      winHeight (val) {
+          if (!this.timer) {
+              this.winHeight = val
+              this.timer = true
+              let _this = this
+              setTimeout(function () {
+                  // that.screenWidth = that.$store.state.canvasWidth
+                  // console.log(_this.winHeight)
+                  _this.init()
+                  _this.timer = false
+              }, 400)
+          }
+      }
+  },
 data () {
     const validateAccount = (rule, value, callback) => {
         value = value.trim()
@@ -428,6 +450,7 @@ data () {
         }
     };
     return {
+      winHeight:document.body.clientHeight,
       btnCollapse:false,
       n:'',
       allUser:[],
@@ -535,6 +558,7 @@ data () {
             {
               title: this.$t('user_table_col_userName'),
               key: 'userName',
+              width: 150,
               render: (h, params) => {
                 return h('Tooltip', {
                   props: { placement: 'top-start' }
@@ -548,6 +572,7 @@ data () {
             {
               title: this.$t('user_table_col_orgName'),
               key: 'orgName',
+              width: 150,
               ellipsis: true,
               render: (h, params) => {
                 return h('Tooltip', {
@@ -561,6 +586,7 @@ data () {
             {
               title: this.$t('user_table_modal1_userType_label1'),
               key: 'userType',
+              width: 150,
               render: (h, params) => {
                 return h('Tooltip', {
                   props: { placement: 'top-start' }
@@ -573,6 +599,7 @@ data () {
             {
               title: this.$t('user_table_col_displayImsPush'),
               key: 'displayImsPush',
+              width: 150,
               render: (h, params) => {
                 return h('Tooltip', {
                   props: { placement: 'top-start' }
@@ -585,6 +612,7 @@ data () {
             {
               title: this.$t('user_table_col_expiredDate'),
               key: 'expiredDate',
+              width: 150,
               render: (h, params) => {
                 return h('Tooltip', {
                     props: { placement: 'top-start' },
@@ -1276,6 +1304,9 @@ methods: {
     }
   },
   computed: {
+    tableHeight:function(){
+      return this.winHeight - 333
+    },
     searchByUserType:function () {
       return this.$t('searchByUserType')
     },

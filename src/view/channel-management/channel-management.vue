@@ -118,8 +118,8 @@ export default {
   },
   data () {
     return {
-      companyName:localStorage.getItem('companyName'),
-      partyId:this.$route.params.partyId || localStorage.getItem('partyId'),
+      companyName:localStorage.getItem('ccs_companyName'),
+      partyId:this.$route.params.partyId || localStorage.getItem('ccs_partyId'),
       columns: [
 			 	{
           title: this.$t('channel_number'),
@@ -506,8 +506,8 @@ export default {
       this._getMes() 
     },
     jump (params) {
-      localStorage.setItem('channelDetailsChannelId', params.row.rid)
-      localStorage.setItem('channelDetailsChannelName', params.row.name)
+      localStorage.setItem('ccs_channelDetailsChannelId', params.row.rid)
+      localStorage.setItem('ccs_channelDetailsChannelName', params.row.name)
       this.$router.push({
         name: 'channel_details',
         partyId:this.partyId

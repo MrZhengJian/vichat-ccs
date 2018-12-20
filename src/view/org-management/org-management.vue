@@ -39,7 +39,7 @@ export default {
     },
     data () {
     	return{
-            partyId:this.$route.params.partyId || localStorage.getItem('partyId'),
+            partyId:this.$route.params.partyId || localStorage.getItem('ccs_partyId'),
             orgData:[],
             updateTreeList:[],
             searchParams:{
@@ -50,7 +50,7 @@ export default {
             orgMes:{},
             spin1:false,
             spin2:false,
-            companyName:localStorage.getItem('companyName')
+            companyName:localStorage.getItem('ccs_companyName')
     	}
     },
     created:function(){
