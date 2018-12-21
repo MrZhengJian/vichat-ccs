@@ -55,7 +55,7 @@
           </Tooltip>
         </p>
 
-        <Input clearable search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
+        <Input class="clearClose" clearable search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
         <Select clearable v-model="searchUserType" style="width:180px;float:left;margin-left:20px;" :placeholder="searchByUserType"  @on-change="searchBox(1)">
             <Option value="1" key="1">{{ $t('employee_type_List1') }}</Option>
             <Option value="2" key="2">{{ $t('employee_type_List2') }}</Option>

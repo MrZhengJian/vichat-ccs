@@ -461,6 +461,7 @@ export default {
             }
         },
         search(){
+            this.$refs.page.currentPage=1
             this.page.current = 1
             this.getSnResources()
         },

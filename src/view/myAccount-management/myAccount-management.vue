@@ -77,9 +77,9 @@
                 <FormItem :label="user_table_modal1_tel_label">
                     <Input type="text" v-model="empMes.phone" :maxlength='20' :placeholder="user_table_modal1_tel_placeholder" style="width: 300px"></Input>
                 </FormItem>
-                <FormItem :label="user_table_modal1_email_label">
+                <!-- <FormItem :label="user_table_modal1_email_label">
                     <Input type="text" v-model="empMes.email" :maxlength='20' :placeholder="user_table_modal1_email_placeholder" style="width: 300px"></Input>
-                </FormItem>
+                </FormItem> -->
                 <FormItem :label="user_table_modal1_gender_label" >
                     <RadioGroup v-model="empMes.sex">
                         <Radio :label="1">{{$t('user_table_modal1_gender_man')}}</Radio>
@@ -110,9 +110,9 @@
                 <FormItem :label="user_table_modal1_tel_label">
                     <Input type="text" v-model="empMes.phone" :maxlength='20' :placeholder="user_table_modal1_tel_placeholder" style="width: 300px"></Input>
                 </FormItem>
-                <FormItem :label="user_table_modal1_email_label">
+                <!-- <FormItem :label="user_table_modal1_email_label">
                     <Input type="text" v-model="empMes.email" :maxlength='20' :placeholder="user_table_modal1_email_placeholder" style="width: 300px"></Input>
-                </FormItem>
+                </FormItem> -->
                 <FormItem :label="user_table_modal1_gender_label" >
                     <RadioGroup v-model="empMes.sex">
                         <Radio :label="1">{{$t('user_table_modal1_gender_man')}}</Radio>
@@ -622,6 +622,7 @@ export default {
         })
     },
     modify (param) {
+      console.log(param)
       this.empMes.account = param.row.account
       this.empMes.uname = param.row.uname
       this.empMes.ccsUid = param.row.ccsUid

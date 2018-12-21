@@ -92,7 +92,7 @@
         <Modal :title="Recharge" v-model="modal3">
             <Form :model="renew_form" ref="renew" :rules="renewRule"  :label-width="120">
                 <FormItem  :label="RechargeByMonth"  style="margin:12px;">
-                    <InputNumber :min="1" v-model="renew_form.monthNumber" :max="120" style="width: 300px"></InputNumber> 
+                    <InputNumber :min="1" v-model="renew_form.monthNumber" :max="99999999" style="width: 300px"></InputNumber> 
                 </FormItem>
                 <FormItem  :label="remark"  style="margin:12px;">
                     <Input v-model="renew_form.record" type="textarea" :rows="3" :maxlength='100' style="width: 300px"/> 
@@ -199,7 +199,7 @@ export default {
                 'agent_edit': this.$store.state.user.funcObj.agent_edit || false,
                 'agent_recharge': this.$store.state.user.funcObj.agent_recharge || false,
                 'agent_add': this.$store.state.user.funcObj.agent_add || false,
-                'agent_del': this.$store.state.user.funcObj.agent_del || false
+                'child_agent_del': this.$store.state.user.funcObj.child_agent_del || false
             },
             moreSearch:this.$t('moreSearch'),
             columns:[
@@ -322,7 +322,7 @@ export default {
                                     }
                                   },
                                   style: {
-                                    display:this.accessList.agent_del?'inline-block':'none',
+                                    display:this.accessList.child_agent_del?'inline-block':'none',
                                     color: '#F25E43',
                                     cursor: 'pointer'
                                   },

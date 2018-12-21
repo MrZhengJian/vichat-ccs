@@ -193,7 +193,8 @@ export default {
                 "company_org":this.$store.state.user.funcObj.company_org||false,
                 "company_account":this.$store.state.user.funcObj.company_account||false,
                 "company_edit":this.$store.state.user.funcObj.company_edit||false,
-                "company_add":this.$store.state.user.funcObj.company_add||false
+                "company_add":this.$store.state.user.funcObj.company_add||false,
+                "company_del":this.$store.state.user.funcObj.company_del||false
             },
             newQuery:false,
             modal1:false,
@@ -374,10 +375,11 @@ export default {
                                   },
                                   style: {
                                     display: this.accessList.company_del ? 'inline-block' : 'none',
-                                    color: '#F25E43',
+                                    color: params.row.agentCompanyName=='CCS'?'#F25E43':'#ddd',
                                     cursor: 'pointer'
                                   },
                                   props: {
+                                    disabled:params.row.agentCompanyName=='CCS'?false:true,
                                     type: 'text',
                                     size: 'small'
                                   }
