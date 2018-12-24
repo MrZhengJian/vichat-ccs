@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  /* eslint-disable */
+/* eslint-disable */
 </script>
 <style rel="stylesheet" lang="less">
     @import "../../styles/common.less";
@@ -32,7 +32,7 @@
         <div class="content">
             <div class="btns">
                 <Button type="primary" @click="batchImportModal(0)">{{$t('account_import')}}</Button>
-                <Button type="primary" @click="batchImportModal(1)">{{$t('account_import')}}{{$t('assign')}}</Button>
+                <Button type="primary" @click="batchImportModal(1)">{{$t('batchAssign')}}</Button>
                 <Button type="primary" @click="assign">{{$t('assign')}}</Button>
             </div>
             <div class="tableBox">

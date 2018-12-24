@@ -1,4 +1,9 @@
 export default {
+  account: 'Account',
+  allacounts: '(Total)',
+  pagenum: '(Page',
+  pageaccount: ')',
+  selectedaccount: '(Selected)',
   edit_agent: 'Edit Agent',
   add_terminal: 'Add Terminal',
   add_dispatcher: 'Add Dispatcher',

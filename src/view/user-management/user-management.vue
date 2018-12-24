@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  /* eslint-disable */
+/* eslint-disable */
 </script>
 <style rel="stylesheet" lang="less">
     @import "../../styles/common.less";
@@ -7,7 +7,7 @@
     
 </style>
 <template>
-    <d class="user_manager">
+    <div class="user_manager">
         <div class="title">
             {{$t('companyNameLabel')}}：{{companyName}}
         </div>
@@ -22,7 +22,7 @@
                 <person-table v-on:search="search" :orgMes="orgMes" :partyId="partyId" :newQuery="newQuery" :personData="personData" :total="total" :canRenew="canRenew"></person-table>
             </div>
         </Row> 
-    </d>
+    </div>
     
 </template>
 

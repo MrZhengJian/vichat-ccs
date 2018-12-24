@@ -42,17 +42,17 @@ module.exports = {
     hot: true,
     inline: true,
     stats: { colors: true },
-    proxy: {//192.168.1.135:8080     47.104.186.84
+    proxy: {// 192.168.1.135:8080     47.104.186.84
       // 匹配代理的url
-      
+
       '/ccs': {
       // 目标服务器地址
-        target: 'http://47.104.186.84',
-        //路径重写
-        pathRewrite: {'^/ccs' : '/ccs'},
+        target: 'http://47.104.186.84:6200',
+        // 路径重写
+        pathRewrite: {'^/ccs': '/ccs'},
         changeOrigin: true
-      },
-      
+      }
+
     }
   }
 
