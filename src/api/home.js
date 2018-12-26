@@ -1,9 +1,9 @@
 /* eslint-disable */
 import axios from '@/libs/api.request'
 
-export const getCounts = (params) => {
+export const getMainInfo = (params) => {
   return axios.request({
-    url: '/agent/api/getMainInfo',
+    url: '/ccs/api/getMainInfo',
     method: 'get'
   })
 }

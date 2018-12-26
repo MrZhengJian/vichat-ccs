@@ -19,7 +19,7 @@
             </div>
             <div >
                 <Spin fix size="large" v-show="spin1"></Spin>
-                <person-table v-on:search="search" :orgMes="orgMes" :partyId="partyId" :newQuery="newQuery" :personData="personData" :total="total" :canRenew="canRenew"></person-table>
+                <person-table v-on:search="search" :orgMes="orgMes" :partyId="partyId" :rechargeType="rechargeType" :newQuery="newQuery" :personData="personData" :total="total" :canRenew="canRenew"></person-table>
             </div>
         </Row> 
     </div>
@@ -40,6 +40,7 @@ export default {
     	return{
             partyId:this.$route.params.partyId || localStorage.getItem('ccs_partyId'),
             canRenew:this.$route.params.canRenew || localStorage.getItem('ccs_canRenew'),
+            rechargeType:this.$route.params.rechargeType || localStorage.getItem('ccs_rechargeType'),
             personData:[],
             total:0,
             searchParams:{

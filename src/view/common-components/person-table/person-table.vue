@@ -21,24 +21,24 @@
             </DropdownMenu>
         </Dropdown>
         <p v-if="!btnCollapse"  style="float:right;display:flex;margin-right:5px;">
-          <Button type="primary" v-if="mycanRenew!='false'&&accessList.company_account_add" @click="openAddUser('4')">{{$t('add_dispatcher')}}</Button>
-          <Button type="primary" v-if="mycanRenew!='false'&&accessList.company_account_add" @click="openAddUser('3')">{{$t('add_terminal')}}</Button>
-          <Button type="primary" v-if="mycanRenew!='false'&&accessList.company_account_recharge" @click="btnClick(9)">{{$t('renew')}}</Button>
+          <Button type="primary" v-if="accessList.company_account_add" @click="openAddUser('4')">{{$t('add_dispatcher')}}</Button>
+          <Button type="primary" v-if="accessList.company_account_add" @click="openAddUser('3')">{{$t('add_terminal')}}</Button>
+          <Button type="primary" v-if="accessList.company_account_recharge&&myrechargeType==0" @click="btnClick(9)">{{$t('renew')}}</Button>
           <Button type="primary" v-if="accessList.company_account_org" @click="btnClick(5)">{{$t('user_table_btn_org')}}</Button>
-          <Button type="primary" v-if="mycanRenew!='false'&&accessList.company_account_import" @click="batchImportModal">{{$t('user_table_btn_batchImport')}}</Button>
+          <Button type="primary" v-if="accessList.company_account_import" @click="batchImportModal">{{$t('user_table_btn_batchImport')}}</Button>
         </p>
         <p v-if="btnCollapse" style="float:right;display:flex;margin-right:5px;">
-          <Tooltip :content="$t('add_dispatcher')" v-if="mycanRenew!='false'&&accessList.company_account_add">
+          <Tooltip :content="$t('add_dispatcher')" v-if="accessList.company_account_add">
             <Button type="primary" @click="openAddUser('4')">
               <Icon custom="iconfont icon-tianjiarenyuan"/>
             </Button>
           </Tooltip>
-          <Tooltip :content="$t('add_terminal')" v-if="mycanRenew!='false'&&accessList.company_account_add">
+          <Tooltip :content="$t('add_terminal')" v-if="accessList.company_account_add">
             <Button type="primary" @click="openAddUser('3')">
               <Icon custom="iconfont icon-xitong_tianjiashebei"/>
             </Button>
           </Tooltip>
-          <Tooltip :content="$t('renew')" v-if="mycanRenew!='false'&&accessList.company_account_recharge">
+          <Tooltip :content="$t('renew')" v-if="accessList.company_account_recharge">
             <Button type="primary"  @click="btnClick(9)">
               <Icon type="md-paper" />
             </Button>
@@ -48,7 +48,7 @@
               <Icon type="md-contacts" />
             </Button>
           </Tooltip>
-          <Tooltip :content="$t('user_table_btn_batchImport')" v-if="mycanRenew!='false'&&accessList.company_account_import">
+          <Tooltip :content="$t('user_table_btn_batchImport')" v-if="accessList.company_account_import">
             <Button type="primary"  @click="batchImportModal">
               <Icon type="ios-download-outline" />
             </Button>
@@ -62,9 +62,10 @@
             <Option value="3" key="3">{{ $t('employee_type_List3') }}</Option>
             <Option value="4" key="4">{{ $t('employee_type_List4') }}</Option>
         </Select>
+        
     </div>
 		<div class="table-main">
-        <Table :height="tableHeight" ref="table" stripe @on-selection-change="tableSelection" :columns="columns" :data="tableData"></Table>
+        <Table :height="tableHeight" ref="table" @on-selection-change="tableSelection" :columns="columns" :data="tableData"></Table>
     </div>
 		<div class="page">
 	        <div style="float: right;">
@@ -266,7 +267,7 @@
                    <span style="font-size:26px;font-weight:bold;color:red">{{comRenewMax}}</span>
                 </FormItem> -->
                 <FormItem :label="renew_by_month_label"  style="margin:12px;">
-                    <InputNumber :max="120" :min="1" v-model="renew_form.monthNumber" style="width: 300px"></InputNumber> 
+                    <InputNumber :max="120"  v-model="renew_form.monthNumber" style="width: 300px"></InputNumber> 
                 </FormItem>
 
                 <FormItem :label="renewtotal"  style="margin:12px;">
@@ -364,6 +365,9 @@ export default {
     },
     canRenew:{
         required: true
+    },
+    rechargeType:{
+        required: true
     }
   },
   components: {
@@ -372,6 +376,7 @@ export default {
     uploadExcel
   },
   created: function () {
+    window.onresize="";
     this._getMes()
   },
   mounted:function(){
@@ -384,14 +389,17 @@ export default {
             _this.winWidth = window.screenWidth
             window.screenHeight = document.body.clientHeight
             _this.winHeight = window.screenHeight
+            console.log(_this.winHeight)
         })()
     }
+    // console.log(window.onresize)
   },
   watch: {
       winHeight (val) {
           if (!this.timer) {
               this.winHeight = val
               this.timer = true
+              // console.log(val)
               let _this = this
               setTimeout(function () {
                   // that.screenWidth = that.$store.state.canvasWidth
@@ -465,6 +473,7 @@ data () {
         }
     };
     return {
+      
       winHeight:document.body.clientHeight,
       winWidth:document.body.clientWidth,
       n:'',
@@ -482,6 +491,7 @@ data () {
       renewMax:0,
       mypartyId:this.partyId,
       mycanRenew:this.canRenew,
+      myrechargeType:this.rechargeType,
       EnterpriseUid:[],
       UTdisabled: false, // 修改信息时，当员工类型是企业管理员时，禁用员工类型select
       show: false, // 添加员工时的组织树
@@ -708,7 +718,7 @@ data () {
                         }
                       },
                       style: {
-                        display: this.mycanRenew!='false'&&this.accessList.company_account_recharge?'inline-block':'none',
+                        display: (this.accessList.company_account_recharge&&this.myrechargeType==0)?'inline-block':'none',
                         cursor: 'pointer',
                         // color: (this.personData[params.index].userType!='1'?'#ccc':'#2DB7F5')
                         color: '#2DB7F5'
@@ -863,7 +873,6 @@ data () {
     }
   },
 methods: {
-
     renewConfirm(){
       if(String(this.renew_form.monthNumber)=='null'){
         this.$Message.error(this.$t('renew_by_month_rule'))
@@ -1135,6 +1144,7 @@ methods: {
     },
     searchBox (n) {
       this.$refs.pages.currentPage=1
+      this.pages.page = 1
       if(n==0){
         this.$emit('search', ['userName', this.searchTxt])
       }else if(n==1){

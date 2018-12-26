@@ -117,7 +117,7 @@
                 <Button  type="default" size="large" @click="modal1=false">
                     {{$t('cancel')}}
                 </Button>
-                <Button type="primary" size="large" @click="modal1=false;modal2=true">
+                <Button type="primary" size="large" @click="comfirmAssign">
                     {{$t('ok')}}
                 </Button>
             </div>
@@ -133,7 +133,7 @@
                 <Button  type="default" size="large" @click="modal2=false">
                     {{$t('cancel')}}
                 </Button>
-                <Button type="primary" size="large" @click="sendAssign(selection)">
+                <Button type="primary" size="large" @click="sendAssign(0)">
                     {{$t('ok')}}
                 </Button>
             </div>
@@ -242,7 +242,46 @@ export default {
                     ])
                   }
                 },
-               
+                {
+                    title: this.$t('org_table_col_action'),
+                    key: 'action',
+                    align: 'center',
+                    fixed: 'right',
+                    width:150,
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Button', 
+                                {
+                                    on: {
+                                        click: () => {
+                                            // console.log(params)
+                                            // if(params.row.resState==this.$t('used')){
+                                            //     this.$Message.error(this.$t('usedError1'))
+                                            //     return
+                                            // }
+                                            this.n = 1
+                                            this.singleAssign = [{
+                                                sn:params.row.sn,
+                                                snType:params.row.snType
+                                            }]
+                                            this.modal1 = true
+                                            this.isSingleAssign = true
+                                        }
+                                    },
+                                    style:{
+                                        // display:this.accessList.company_edit?'inline-block':'none',
+                                        color:params.row.resState==this.$t('used')?'#ccc':'#2DB7F5',
+                                        cursor:'pointer'
+                                    },
+                                    props: {
+                                        disabled:params.row.resState==this.$t('used')?true:false,
+                                        type: 'text',
+                                        size: 'small'
+                                    } 
+                                },this.$t('assign'))
+                        ]);
+                    }
+                }
               
             ],
             page:{
@@ -250,6 +289,8 @@ export default {
                 current:1,
                 size:10
             },
+            singleAssign:[],
+            isSingleAssign:false,
             selection:[],
             selectionUid:[],
             batchImportContent:'',
@@ -505,11 +546,22 @@ export default {
                 this.$Message.warning(this.$t('usedError1'))
                 return
             }
+            this.isSingleAssign = false
             this.modal1 = true
+        },
+        comfirmAssign(){
+            if(this.importAgentId==0){
+                this.$Message.error(this.$t('user_table_import_agentId_error'))
+                return
+            }
+            this.modal1=false;
+            this.modal2=true
         },
         sendAssign(data){
             let _this = this
-            // let data = Object.assign({},this.uploadTableDataContent,this.selection)
+            if(data==0){
+                data = this.isSingleAssign?this.singleAssign:this.selection
+            }
             let param = {
                 agentId:this.importAgentId,
                 snResources:data

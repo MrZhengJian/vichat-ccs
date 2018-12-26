@@ -70,3 +70,11 @@ export const batchUpdateCompanyExpiredDate = (params) => {
     params
   })
 }
+
+export const chgAgentPassword = (params) => {
+  return axios.request({
+    url: '/ccs/api/chgAgentPassword',
+    method: 'get',
+    params
+  })
+}

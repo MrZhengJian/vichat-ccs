@@ -425,10 +425,6 @@ export default {
       if (this.channelForm.name == '') {
         this.$Message.error(this.$t('channel_addChannel_error1'))
         return
-      }else if(!/^[a-zA-Z0-9_\u4e00-\u9fa5]+$/.test(this.channelForm.name)){
-        // console.log(this.addchannelForm.name)
-        this.$Message.error(this.$t('userName_reg_error'))
-        return
       }
       // console.log(this.addChannel.type)
       if (this.channelForm.style == '') {
