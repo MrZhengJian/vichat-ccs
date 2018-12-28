@@ -16,7 +16,7 @@
             </Button>
             <DropdownMenu slot="list">
                 <DropdownItem name='1'>{{$t('all')}}</DropdownItem>
-                <DropdownItem name='2'>{{$t('current_page')}}</DropdownItem>
+                <DropdownItem name='2'>{{$t('current_page')}}</DropdownItem> 
                 <DropdownItem name='3'>{{$t('selected_item')}}</DropdownItem>
             </DropdownMenu>
         </Dropdown>
@@ -45,7 +45,7 @@
           </Tooltip>
           <Tooltip :content="$t('user_table_btn_org')"  v-if="accessList.company_account_org">
             <Button type="primary"  @click="btnClick(5)">
-              <Icon type="md-contacts" />
+              <Icon custom="iconfont icon-org"/>
             </Button>
           </Tooltip>
           <Tooltip :content="$t('user_table_btn_batchImport')" v-if="accessList.company_account_import">
