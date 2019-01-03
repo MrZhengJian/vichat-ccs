@@ -390,6 +390,9 @@ export default {
             let _this = this
             data.forEach(function(item,index){
                 item.resState=item.resState==1?_this.$t('unused'):_this.$t('used')
+                if(!item.agentId&&!item.agentCompanyName){
+                    item.agentCompanyName = 'CCS'
+                }
             })
             return data
         },
@@ -424,16 +427,23 @@ export default {
         },
         uploadTableData(data){
             let tableData=[]
-            data.forEach(function(item){
-                let obj={}
-                if(item.SN){
-                    obj.sn = item.SN
+            for(let i=0;i<data.length;i++){
+                if(!data[i].SN||!data[i]['SN Type']){
+                    this.$Message.error(this.$t('impotError'))
+                    this.$refs.uploadExcel.tableData=[]
+                    this.$refs.uploadExcel.tableTitle=[]
+                    this.$refs.uploadExcel.showProgress=false
+                    this.$refs.uploadExcel.file=null
+                    return
                 }
-                if(item['SN Type']){
-                    obj.snType = item['SN Type']
-                }
+                let obj = {
+                    sn:data[i].SN,
+                    snType:data[i]['SN Type'],
+                } 
+
                 tableData.push(obj)
-            })
+            }
+           
             this.uploadTableDataContent = tableData
         },
         sendBatchImport(){

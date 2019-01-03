@@ -55,8 +55,8 @@
           </Tooltip>
         </p>
 
-        <Input class="clearClose" clearable search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
-        <Select clearable v-model="searchUserType" style="width:180px;float:left;margin-left:20px;" :placeholder="searchByUserType"  @on-change="searchBox(1)">
+        <Input class="clearClose" @on-change="clear" clearable search enter-button @on-search="searchBox(0)" v-model="searchTxt" :placeholder="user_table_search_placeholder" style="width: 220px;float:left"></Input>
+        <Select clearable  v-model="searchUserType" style="width:180px;float:left;margin-left:20px;" :placeholder="searchByUserType"  @on-change="searchBox(1)">
             <Option value="1" key="1">{{ $t('employee_type_List1') }}</Option>
             <Option value="2" key="2">{{ $t('employee_type_List2') }}</Option>
             <Option value="3" key="3">{{ $t('employee_type_List3') }}</Option>
@@ -571,7 +571,6 @@ data () {
             },
             {
               title: this.$t('user_table_col_account'),
-              minWidth: 150,
               key: 'terminal',
               ellipsis: true,
               render: (h, params) => {
@@ -587,7 +586,6 @@ data () {
             {
               title: this.$t('user_table_col_userName'),
               key: 'userName',
-              minWidth: 150,
               render: (h, params) => {
                 return h('Tooltip', {
                   props: { placement: 'top-start' }
@@ -601,7 +599,6 @@ data () {
             {
               title: this.$t('user_table_col_orgName'),
               key: 'orgName',
-              minWidth: 150,
               ellipsis: true,
               render: (h, params) => {
                 return h('Tooltip', {
@@ -615,7 +612,7 @@ data () {
             {
               title: this.$t('user_table_modal1_userType_label1'),
               key: 'userType',
-              width: 150,
+              width: 100,
               render: (h, params) => {
                 return h('Tooltip', {
                   props: { placement: 'top-start' }
@@ -628,7 +625,7 @@ data () {
             {
               title: this.$t('user_table_col_displayImsPush'),
               key: 'displayImsPush',
-              width: 150,
+              width: 100,
               render: (h, params) => {
                 return h('Tooltip', {
                   props: { placement: 'top-start' }
@@ -641,7 +638,7 @@ data () {
             {
               title: this.$t('user_table_col_expiredDate'),
               key: 'expiredDate',
-              width: 150,
+              width: 120,
               render: (h, params) => {
                 return h('Tooltip', {
                     props: { placement: 'top-start' },
@@ -873,6 +870,7 @@ data () {
     }
   },
 methods: {
+    
     renewConfirm(){
       if(String(this.renew_form.monthNumber)=='null'){
         this.$Message.error(this.$t('renew_by_month_rule'))
@@ -979,6 +977,9 @@ methods: {
             return
         }else if(modal == 8 && n>=0){
             this.$Message.warning(this.$t('user_table_enterprise_warning8'))
+            return
+        }else if(modal == 5 && n>=0){
+            this.$Message.warning(this.$t('user_table_enterprise_warning5'))
             return
         }
       }
@@ -1152,6 +1153,11 @@ methods: {
       }
       
     },
+    clear(){
+      if(this.searchTxt==''){
+        this.$emit('search', ['userName', this.searchTxt])
+      }
+    },
     // 获取所有被选择的员工的uid
     tableSelection (selection) {
       this.selection = selection
@@ -1264,11 +1270,19 @@ methods: {
     uploadTableData(data){
         let myTableData=[]
         for(let i=0;i<data.length;i++){
+          if(!data[i].SN||!data[i].OrgName||!data[i].UserName){
+            this.$Message.error(this.$t('impotError'))
+            this.$refs.uploadExcel.tableData=[]
+            this.$refs.uploadExcel.tableTitle=[]
+            this.$refs.uploadExcel.showProgress=false
+            this.$refs.uploadExcel.file=null
+            return
+          }
           let obj = {
             imei:data[i].SN,
             orgName:data[i].OrgName,
             userName:data[i].UserName
-          }
+          } 
           if(data[i].Phone){
             obj.phone = data[i].Phone
           }
@@ -1276,6 +1290,7 @@ methods: {
           myTableData.push(obj)
         }
         this.uploadTableDataContent = myTableData
+        this.$Message.success(this.$t('fileReadSuc'))
     },
     sendBatchImport(){
         let _this = this

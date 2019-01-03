@@ -147,7 +147,7 @@
                 </FormItem>
                 <FormItem :label="priorityLabel" >
                     <Select v-model="empMes.priority" style="width:300px" >
-                        <Option :disabled='item.value==10&&empMes.adminGrade!=10' v-for="item in priorityList" :value="item.value" :key="item.value">{{ item.desc }}</Option>
+                        <Option :disabled='item.value==10' v-for="item in priorityList" :value="item.value" :key="item.value">{{ item.desc }}</Option>
                     </Select>
                 </FormItem>
                 <FormItem :label="timelenLabel" style="width:300px">
@@ -551,7 +551,10 @@ export default {
       }
       queryRoomMembers(param)
         .then(function (res) {
-          // 表格数据(应该在getTableData方法里分页获取)
+          if(res.data.data.length==0&&_this.pages.page>1){
+            _this.pages.page--
+            _this.getMes ()
+          }
           _this.selectionUid = []
           _this.personData = res.data.data
           _this.pages.total = _this.channelCount = res.data.count

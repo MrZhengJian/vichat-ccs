@@ -175,6 +175,7 @@ export default [
       }
     ]
   },
+  
   {
     path: '_details_management',
     name: '_details_management',
@@ -204,6 +205,26 @@ export default [
         },
         component: () => import('@/view/details-management/company-charge/company-charge.vue')
       },
+    ]
+  },
+  {
+    path: '_version_management',
+    name: '_version_management',
+    component: Main,
+    meta: {
+      title: i18n.t('version_management'),
+    },
+    children: [
+      {
+        path: '/version_management',
+        name: 'version_management',
+        meta: {
+          title: i18n.t('version_management'),
+          hideInMenu: false,
+          icon: 'logo-buffer'
+        },
+        component: () => import('@/view/version-management/version-management.vue')
+      }
     ]
   },
   {

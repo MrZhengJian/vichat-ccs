@@ -1,7 +1,7 @@
 <template>
     <div class="Enterprise_management">
     	<Card class="searchCard">
-            <div style="overflow:hidden">
+            <div style="overflow:hidden;height:35px;">
             	<div class="searchBox">
             		<span>{{$t('name')}}：</span>
             		<Input v-model="searchMes.name" clearable :maxlength='60'  type="text" :placeholder="register_firm_name_placeholder" style="width:200px"/>
@@ -12,9 +12,9 @@
             	</div>
                 <div class="searchBox">
             		<span>{{$t('agent')}}：</span>
-            		<Select clearable filterable v-model="searchMes.agentId" style="width:200px">
-                            <Option v-for="item in agentList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                        </Select>
+            		<Select v-model="searchMes.agentId" @on-change="selectAgentId" style="width:200px">
+                    <Option v-for="item in agentList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
             	</div>
 
                 <div class="searchBox">
@@ -176,6 +176,7 @@ export default {
       }
     }
     const validateUserName = (rule, value, callback) => {
+      console.log(value)
       value = value.trim()
       if (value === '') {
         callback(new Error(this.$t('cannotEmpty')))
@@ -185,16 +186,7 @@ export default {
         callback()
       }
     }
-    const validateUserName1 = (rule, value, callback) => {
-      value = value.trim()
-      if (value === '') {
-        callback(new Error(this.$t('cannotEmpty')))
-      } else if (value.length > 20) {
-        callback(new Error(this.$t('max_len_rules')))
-      } else {
-        callback()
-      }
-    }
+    
     return {
       agentList: [
         {
@@ -202,7 +194,7 @@ export default {
           label: this.$t('all')
         },
         {
-          value: null,
+          value: -1,
           label: 'CCS'
         }
       ],
@@ -431,7 +423,7 @@ export default {
           {required: true, validator: validateUserName, trigger: 'blur'}
         ],
         userName: [
-          {required: true, validator: validateUserName1, trigger: 'blur'}
+          {required: true, validator: validateUserName, trigger: 'blur'}
         ],
         contactName: [
           {required: true, validator: validateUserName, trigger: 'blur'}
@@ -463,7 +455,7 @@ export default {
               label: this.$t('all')
             },
             {
-              value: '',
+              value: -1,
               label: 'CCS'
             }
           ]
@@ -495,7 +487,7 @@ export default {
         companyName: this.searchMes.name,
         freeType: this.searchMes.freeType,
         terminal: this.searchMes.terminal,
-        agentId: this.searchMes.agentId
+        agentId: this.searchMes.agentId==-1?'':this.searchMes.agentId
       }
       queryCompany(param)
         .then(function (res) {
@@ -669,12 +661,16 @@ export default {
       this.form = {
         terminal: '',
         companyName: '',
-        userName: '',
         tel: '',
         password: '',
         repassword: '',
+        userName: '',
+        contactName: '',
         freeType: 1
       }
+    },
+    selectAgentId(obj){
+      console.log(obj)
     }
   },
   computed: {

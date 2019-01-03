@@ -386,6 +386,10 @@ export default {
       queryChannels(params)
         .then(function (res) {
           // console.log(res.data.count)
+          if(res.data.data.length==0&&_this.pages.page>1){
+            _this.pages.page--
+            _this._getMes ()
+          }
           _this.pages.total = res.data.count
           _this.spin = false
           _this.saveTableData = JSON.parse(JSON.stringify(res.data.data))

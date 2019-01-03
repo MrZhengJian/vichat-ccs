@@ -6,7 +6,7 @@
                     <div class="search_label">{{$t('agent')}}</div>
                     <div class="search_input agentTree">
                         <Input @on-focus="showTree=true" :maxlength='60' readonly v-model='searchMes.agentName' clearable :placeholder="agent_name_placeholder" @on-change="clearSearchAgent" style="width:250px"/>
-                        <Tree v-if="showTree" @on-select-change="clickTreeNode" :data="treeDate" :load-data="getChildAgent" style="width:250px"></Tree>
+                        <Tree v-if="showTree"  @on-select-change="clickTreeNode" :data="treeDate" :load-data="getChildAgent" style="width:250px"></Tree>
                     </div>
                 </div>
                 <div class="search_item">
@@ -225,7 +225,7 @@ export default {
             },
             busiStateList:[
                 {
-                  value:'',
+                  value:'0',
                   label:this.$t('all')
                 },
                 {
@@ -301,7 +301,7 @@ export default {
                 rows:this.page.size
             }
             let data = {
-                busiState:this.searchMes.busiState,
+                busiState:this.searchMes.busiState=='0'?'':this.searchMes.busiState,
                 startDate:this.searchMes.date[0]?dateFormat(new Date(this.searchMes.date[0]),'yyyy-MM-dd hh:mm:ss'):'',
                 endDate:this.searchMes.date[1]?dateFormat(new Date(this.searchMes.date[1]),'yyyy-MM-dd hh:mm:ss'):'',
                 agentId:this.searchMes.agentId

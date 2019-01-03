@@ -42,7 +42,7 @@ module.exports = {
     hot: true,
     inline: true,
     stats: { colors: true },
-    proxy: {// 192.168.1.135:8080     47.104.186.84
+    proxy: {// http://192.168.1.137:8080     http://47.104.186.84:6200
       // 匹配代理的url
 
       '/ccs': {
