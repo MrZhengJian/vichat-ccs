@@ -531,6 +531,11 @@ export default {
       queryCcsUser(params)
         .then(res => {
           if (res.data.code == 0) {
+            if(res.data.data.length==0&&_this.pages.page!=1){
+              _this.pages.page--
+              _this._getMes()
+              return
+            }
             _this.tableData = _this.turnData(res.data.data)
             _this.pages.total = res.data.count
           }

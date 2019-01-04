@@ -303,6 +303,11 @@ export default {
       queryPrisonSecRole(param)
       .then(res=>{
         if(res.data.code==0){
+          if(res.data.data.length==0&&_this.pages.page!=1){
+            _this.pages.page--
+            _this.getRoleList()
+            return
+          }
           _this.pages.total = res.data.count
           _this.tableData = res.data.data
           _this.saveTableData = JSON.parse(JSON.stringify(res.data.data))
