@@ -76,6 +76,11 @@
                 <FormItem :label="contacts_number" prop="tel">
                     <Input type="text" v-model="form.tel" :placeholder="user_table_modal1_tel_placeholder" style="width:300px;"></Input>
                 </FormItem>
+                <FormItem :label="functions" >
+                    <CheckboxGroup v-model="formFunction">
+                      <Checkbox v-for="item in functionList" :label="item.value">{{item.label}}</Checkbox>
+                    </CheckboxGroup>
+                </FormItem>
             </Form>
             <div slot="footer">
                 <Button type="default" size="large" @click="modal3=false">{{$t('cancel')}}</Button>
@@ -104,6 +109,11 @@
 
                 <FormItem :label="contacts_number" prop="tel">
                     <Input type="text" v-model="form.tel" :placeholder="user_table_modal1_tel_placeholder" style="width:300px;"></Input>
+                </FormItem>
+                <FormItem :label="functions" >
+                    <CheckboxGroup v-model="formFunction">
+                      <Checkbox v-for="item in functionList" :label="item.value">{{item.label}}</Checkbox>
+                    </CheckboxGroup>
                 </FormItem>
             </Form>
             <div slot="footer">
@@ -408,6 +418,7 @@ export default {
         current: 1,
         size: 10
       },
+      formFunction:[],
       form: {
         terminal: '',
         companyName: '',
@@ -418,6 +429,12 @@ export default {
         contactName: '',
         freeType: 1
       },
+      functionList:[
+        {
+          value:0,
+          label:this.$t('QuickAlarm')
+        }
+      ],
       ruleCustom: {
         companyName: [
           {required: true, validator: validateUserName, trigger: 'blur'}
@@ -606,6 +623,17 @@ export default {
           delete this.form.repassword
           // this.form.userNumber = this.form.terminal
           this.form.authNumber = this.form.freeType == '1' ? 1000 : -1
+
+          let str = ''
+          this.functionList.forEach(item=>{
+            if(this.formFunction.indexOf(item.value)>-1){
+              str+=1
+            }else{
+              str+=0
+            }
+          })
+          this.form.function = str
+
           registerCompany(this.form)
             .then(function (res) {
               // console.log( _this.form)
@@ -627,6 +655,12 @@ export default {
       this.form.userName = param.row.userName || ''
       this.form.tel = param.row.tel || ''
       this.form.freeType = param.row.freeType == this.$t('free_by_date') ? 1 : 0
+
+      for(let i=0,arr=param.row.function;i<arr.length;i++){
+        if(arr[i]=='1'){
+          this.formFunction.push(i)
+        }
+      }
       this.modal4 = true
     },
     saveModify () {
@@ -639,6 +673,17 @@ export default {
           this.modifyObj.tel = this.form.tel
           this.modifyObj.freeType = this.form.freeType
           delete this.modifyObj.createTime
+
+          let str = ''
+          this.functionList.forEach(item=>{
+            if(this.formFunction.indexOf(item.value)>-1){
+              str+=1
+            }else{
+              str+=0
+            }
+          })
+          this.modifyObj.function = str
+
           saveCompany(this.modifyObj)
             .then(res => {
               if (res.data.code == 0) {
@@ -789,6 +834,9 @@ export default {
     },
     free_type: function () {
       return this.$t('free_type')
+    },
+    functions: function () {
+      return this.$t('functions')
     }
 
   },

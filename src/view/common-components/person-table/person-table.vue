@@ -98,7 +98,7 @@
                 <div class='selectOrg'>
                     <span>{{$t('user_table_modal1_org_label')}}</span>
                     <div class="treeBox">
-                        <Input type="text" @on-focus="show=true" :maxlength='20' v-model="empMes.orgName" style="width: 300px" :placeholder="user_table_modal1_org_placeholder"></Input>
+                        <Input type="text" :readonly="true" @on-focus="show=true" :maxlength='20' v-model="empMes.orgName" style="width: 300px" :placeholder="user_table_modal1_org_placeholder"></Input>
                     </div>
                 </div>
                 <org-tree v-show="show" :partyId='mypartyId' v-on:changeOrg="addUserChangeOrg"></org-tree>
@@ -1093,7 +1093,7 @@ methods: {
       // this.UTdisabled = this.personData[index].userType=='1'?true:false
       // console.log(this.personData[index].expiredDate)
       this.empMes.expiredDate = dateFormat(new Date(this.personData[index].expiredDate), 'yyyy-MM-dd')
-      console.log(this.empMes.userType)
+      // console.log(this.empMes.userType)
     },
     // 确认修改
     sendModify () {
