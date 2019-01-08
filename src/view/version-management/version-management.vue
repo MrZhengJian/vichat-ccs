@@ -15,8 +15,8 @@
                     <Input v-model="searchMes.versionId" :placeholder="versionId_placeholder" clearable :maxlength='20' type="text"  style="width:160px"/>
                 </div>
                 <div class="searchBox">
-                    <span>{{$t('pkgId')}}：</span>
-                    <Input v-model="searchMes.pkgId" :placeholder="pkgId_placeholder" clearable type="text" :maxlength='20' style="width:160px"/>
+                    <span>{{$t('pkgName')}}：</span>
+                    <Input v-model="searchMes.pkgName" :placeholder="pkgId_placeholder" clearable type="text" :maxlength='20' style="width:160px"/>
                 </div>
                  <div class="searchBox">
                     <span>{{$t('versionCode')}}：</span> 
@@ -68,8 +68,8 @@
                 <FormItem :label="versionId" prop="versionId">
                     <Input type="text" v-model="uploadFileForm.versionId" :maxlength='20' :placeholder="versionId_placeholder" style="width: 300px"></Input>
                 </FormItem>  
-                <FormItem :label="pkgId" prop="pkgId">
-                    <Input type="text" v-model="uploadFileForm.pkgId" :maxlength='20' :placeholder="pkgId_placeholder" style="width: 300px"></Input>
+                <FormItem :label="pkgName" prop="pkgName">
+                    <Input type="text" v-model="uploadFileForm.pkgName" :maxlength='20' :placeholder="pkgId_placeholder" style="width: 300px"></Input>
                 </FormItem> 
                 <FormItem :label="uploadFile" prop="uploadFile">
                     <Upload 
@@ -133,6 +133,7 @@ export default {
         this.queryAppVersionFile()
     },
     data () {
+        const win = window
         const validateUserName = (rule, value, callback) => {
             value = value.trim()
             if (value === '') {
@@ -147,7 +148,7 @@ export default {
             isUploadOK:false,
             searchMes:{
                 versionId:'',
-                pkgId:'',
+                pkgName:'',
                 fileName:'',
                 versionCode:'',
                 fileState:''
@@ -168,15 +169,15 @@ export default {
                   }
                 },
                 {
-                  title: this.$t('pkgId'),
-                  key: 'pkgId',
+                  title: this.$t('pkgName'),
+                  key: 'pkgName',
                   ellipsis: true,
                   render: (h, params) => {
                     return h('Tooltip', {
                       props: { placement: 'top-start' }
                     }, [
-                      params.row.pkgId,
-                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.pkgId)
+                      params.row.pkgName,
+                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.pkgName)
                     ])
                   }
                 },
@@ -202,11 +203,25 @@ export default {
                   key: ' fileName',
                   ellipsis: true,
                   render: (h, params) => {
+                    
                     return h('Tooltip', {
                       props: { placement: 'top-start' }
                     }, [
-                      params.row. fileName,
-                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row. fileName)
+                    //   params.row.fileName,
+                      h('a', 
+                        { 
+                            style: { whiteSpace: 'normal', wordBreak: 'break-all' },
+                            // props: { href: 'www.baidu.com' },
+                            on:{
+                                click:function(){
+                                    // console.log(params.row.fileUrl)
+                                    win.open(params.row.fileUrl)
+                                    // window.location.href=params.row.fileUrl
+                                }
+                            }
+                        }, 
+                        params.row.fileName),
+                      h('span', { slot: 'content', style: { whiteSpace: 'normal', wordBreak: 'break-all' } }, params.row.fileName)
                     ])
                   }
                 },
@@ -218,7 +233,7 @@ export default {
                     return h('Tooltip', {
                       props: { placement: 'top-start' },
                       style:{
-                        color:params.row.fileState==this.$t('published')?'#19be6b':'#515a6e'
+                        color:params.row.fileState==this.$t('published')?'#19be6b':(params.row.fileState==this.$t('unpublished')?'#515a6e':'#ed4014')
                       }
                     }, [
                       params.row.fileState,
@@ -269,7 +284,7 @@ export default {
             uploadFileForm:{
                 versionCode:'',
                 versionId:'', 
-                pkgId:''
+                pkgName:''
             },
             ruleCustom:{
                 versionCode: [
@@ -278,7 +293,7 @@ export default {
                 versionId: [
                     {required: true,validator: validateUserName, trigger: 'blur'}
                 ],
-                pkgId: [
+                pkgName: [
                     {required: true,validator: validateUserName, trigger: 'blur'}
                 ]
             },
@@ -291,7 +306,7 @@ export default {
 
             uploadFile:this.$t('upload')+this.$t('file'),
             versionId:this.$t('versionId'),
-            pkgId:this.$t('pkgId'),
+            pkgName:this.$t('pkgName'),
             fileName:this.$t('fileName'),
             versionCode:this.$t('versionCode'),
             versionId_placeholder:this.$t('versionId_placeholder'),
@@ -311,7 +326,7 @@ export default {
                 page:this.page.current,
                 rows:this.page.size,
                 versionId:this.searchMes.versionId,
-                pkgId:this.searchMes.pkgId,
+                pkgName:this.searchMes.pkgName,
                 versionCode:this.searchMes.versionCode,
                 fileName:this.searchMes.fileName,
                 fileState:this.searchMes.fileState,
@@ -331,7 +346,13 @@ export default {
         turnData(data){
             let _this = this
             data.forEach(function(item,index){
-                item.fileState=item.fileState==2?_this.$t('unpublished'):_this.$t('published')
+                if(item.fileState==1){
+                    item.fileState=_this.$t('published')
+                }else if(item.fileState==2){
+                    item.fileState=_this.$t('unpublished')
+                }else if(item.fileState==3){
+                    item.fileState=_this.$t('romved')
+                }
             })
             return data
         },
@@ -356,7 +377,7 @@ export default {
             this.uploadFileForm={
                 versionCode:'',
                 versionId:'', 
-                pkgId:''
+                pkgName:''
             },
             this.$refs.uploadBtn.clearFiles()
             this.modal1 = true
@@ -365,7 +386,7 @@ export default {
             
         },
         beforeUpload(obj){
-            if(this.uploadFileForm.versionCode==""||this.uploadFileForm.versionId==""||this.uploadFileForm.pkgId==""){
+            if(this.uploadFileForm.versionCode==""||this.uploadFileForm.versionId==""||this.uploadFileForm.pkgName==""){
                 this.$Message.error(this.$t('pleaseEnterMsgFirst'))
                 return false
             }

@@ -433,6 +433,10 @@ export default {
         {
           value:0,
           label:this.$t('QuickAlarm')
+        },
+        {
+          value:1,
+          label:this.$t('rec')
         }
       ],
       ruleCustom: {
@@ -655,12 +659,14 @@ export default {
       this.form.userName = param.row.userName || ''
       this.form.tel = param.row.tel || ''
       this.form.freeType = param.row.freeType == this.$t('free_by_date') ? 1 : 0
-
-      for(let i=0,arr=param.row.function;i<arr.length;i++){
-        if(arr[i]=='1'){
-          this.formFunction.push(i)
+      if(param.row.function){
+        for(let i=0,arr=param.row.function;i<arr.length;i++){
+          if(arr[i]=='1'){
+            this.formFunction.push(i)
+          }
         }
       }
+      
       this.modal4 = true
     },
     saveModify () {
