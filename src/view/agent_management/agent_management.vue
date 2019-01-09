@@ -26,7 +26,7 @@
                 <Button type='primary' v-if="accessList.agent_add" @click="addAgent">{{$t('addagent')}}</Button>
             </div>
             <div class="table">
-                <Table :height="tableHeight" :columns="columns" :data="tableData"></Table>
+                <Table stripe :height="tableHeight" :columns="columns" :data="tableData"></Table>
             </div>
         </div>
         <div class="page">

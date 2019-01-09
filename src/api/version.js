@@ -32,3 +32,12 @@ export const queryAppVersionFile = (params) => {
       params
     })
 }
+
+export const delAppVersionFile = (params) => {
+    return axios.request({
+      url: '/ccs/api/delAppVersionFile',
+      method: 'post',
+      data:params
+    })
+}
+

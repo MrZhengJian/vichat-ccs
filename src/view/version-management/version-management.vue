@@ -37,7 +37,7 @@
                 <Button type="primary" @click="openUpload">{{$t('upload')}}</Button>
             </div>
             <div class="tableBox">
-                <Table @on-selection-change="tableSelection" ref="selection" :columns="tableColums" :data="tableData"></Table>
+                <Table stripe @on-selection-change="tableSelection" ref="selection" :columns="tableColums" :data="tableData"></Table>
             </div>
         </div>
         
@@ -122,12 +122,26 @@
                 </Button>
             </div>
         </Modal>
+        <Modal
+            v-model="modal4"
+            :title="confirmDelete"
+        >
+            <h1 style="padding:20px;text-align:center">{{$t('user_table_modal7_content')}}</h1>
+            <div slot="footer">
+                <Button type="default" size="large" @click="modal4=false">
+                    {{$t('cancel')}}
+                </Button>
+                <Button type="primary" size="large" @click="sendDelete">
+                    {{$t('ok')}}
+                </Button>
+            </div>
+        </Modal>
     </div>
     
 </template>
 
 <script type="ecmascript-6">
-import { queryAppVersionFile,sendAppVersionMsg,startAppVersionFile,uploadAppVersionFile } from '@/api/version'
+import { queryAppVersionFile,sendAppVersionMsg,startAppVersionFile,uploadAppVersionFile,delAppVersionFile } from '@/api/version'
 export default {
     created:function(){
         this.queryAppVersionFile()
@@ -267,7 +281,40 @@ export default {
                                         type: 'text',
                                         size: 'small'
                                     } 
-                                },this.$t('publish'))
+                                },this.$t('publish')),
+                            h('Button', 
+                                {
+                                    on: {
+                                        click: () => {
+                                            this.deleteItem = JSON.parse(JSON.stringify(params.row))
+                                            console.log(params)
+                                            switch(this.deleteItem.fileState){
+                                                case this.$t('published'):
+                                                    this.deleteItem.fileState=1
+                                                    break;
+                                                case this.$t('unpublished'):
+                                                    this.deleteItem.fileState=2
+                                                    break;
+                                                case this.$t('romved'):
+                                                    this.deleteItem.fileState=3
+                                                    break;
+                                            }
+                                            delete this.deleteItem._index
+                                            delete this.deleteItem._rowKey
+                                            this.modal4 = true
+                                        }
+                                    },
+                                    style:{
+                                        // display:this.accessList.company_edit?'inline-block':'none',
+                                        color:params.row.fileState==this.$t('published')?'#ccc':'#ed4014',
+                                        cursor:'pointer'
+                                    },
+                                    props: {
+                                        disabled:params.row.fileState==this.$t('published')?true:false,
+                                        type: 'text',
+                                        size: 'small'
+                                    } 
+                                },this.$t('account_del'))    
                         ]);
                     }
                 }
@@ -300,7 +347,9 @@ export default {
             modal1: false, //
             modal2: false, //
             modal3: false, //
+            modal4: false, //
             fileId:'',
+            deleteItem:'',
 
 
 
@@ -315,6 +364,7 @@ export default {
             fileName_placeholder:this.$t('fileName_placeholder'),
             publish:this.$t('publish'),
             push:this.$t('push'),
+            confirmDelete:this.$t('user_table_modal3_title'),
     	}
     },
 
@@ -423,6 +473,17 @@ export default {
                     _this.$Message.success(_this.$t('push')+_this.$t('success'))
                     _this.modal3 = false
                     // _this.queryAppVersionFile()
+                }
+            })
+        },
+        sendDelete(){
+            let _this = this
+            delAppVersionFile(this.deleteItem)
+            .then(res=>{
+                if(res.data.code==0){
+                    _this.$Message.success(_this.$t('account_del')+_this.$t('success'))
+                    _this.modal4 = false
+                    _this.queryAppVersionFile()
                 }
             })
         },

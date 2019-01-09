@@ -65,7 +65,7 @@
         
     </div>
 		<div class="table-main">
-        <Table :height="tableHeight" ref="table" @on-selection-change="tableSelection" :columns="columns" :data="tableData"></Table>
+        <Table stripe :height="tableHeight" ref="table" @on-selection-change="tableSelection" :columns="columns" :data="tableData"></Table>
     </div>
 		<div class="page">
 	        <div style="float: right;">
@@ -317,10 +317,10 @@
             >
             <Tabs type="card" @on-click="tabChange">
                 <TabPane :label="successList" name="name1">
-                    <Table border :columns="importSuccessColumns" :data="importSuccessData"></Table>
+                    <Table stripe border :columns="importSuccessColumns" :data="importSuccessData"></Table>
                 </TabPane>
                 <TabPane :label="errorList" name="name2">
-                    <Table border :columns="importFailurecolumns" :data="importFailureData"></Table>
+                    <Table stripe border :columns="importFailurecolumns" :data="importFailureData"></Table>
                 </TabPane>
             </Tabs>
             <div slot="footer">
